@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MyGrp</title>
+  <meta name="description" content="A Page to Find Your Classes and Schedule in USTHB">
+  <link rel="icon" href="Logo/Grp.JPG" type="image/jpg">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Hamburger Menu Button -->
+<button class="hamburger-menu" id="hamburgerMenu">
+
+  <div class="simple-lines">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  
+  <!-- Walking figure (hidden by default) -->
+  <div class="walking-figure">
+    <div class="line head-line">
+      <div class="hat"></div>
+    </div>
+    <div class="line body-line">
+      <div class="hand left-hand"></div>
+      <div class="hand right-hand"></div>
+    </div>
+    <div class="line legs-line">
+      <div class="leg left-leg"></div>
+      <div class="leg right-leg"></div>
+    </div>
+  </div>
+</button>
+
+  <!-- Sidebar for Week Management -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <h3>Week Management</h3>
+    <button id="closeSidebar" class="close-sidebar">✕</button>
+  </div>
+  
+  <div class="week-buttons" id="weekButtons">
+    <!-- Week buttons will be generated here -->
+  </div>
+  
+  <button class="add-week-btn" id="addWeekButton">+ Add New Week</button>
+</div>
+
+  <!-- Sidebar Overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- Week Delete Confirmation Modal -->
+<div id="deleteWeekModal" class="modal-overlay">
+  <div class="modal-content">
+    <div class="modal-icon">⚠️</div>
+    <div class="modal-title">Delete Week</div>
+    <div class="modal-message">Are you sure you want to delete this week? This action cannot be undone.</div>
+    <div id="modalWeekInfo" class="modal-student-info">
+      <!-- Week info will be inserted here -->
+    </div>
+    <div class="modal-buttons">
+      <button id="confirmWeekDelete" class="modal-button confirm">Yes, Delete</button>
+      <button id="cancelWeekDelete" class="modal-button cancel">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="modal-overlay">
+  <div class="modal-content">
+    <div class="modal-icon">⚠️</div>
+    <div class="modal-title">Delete Student</div>
+    <div class="modal-message">Are you sure you want to remove this student from the table?</div>
+    <div id="modalStudentInfo" class="modal-student-info">
+      <!-- Student info will be inserted here -->
+    </div>
+    <div class="modal-buttons">
+      <button id="confirmDelete" class="modal-button confirm">Yes, Delete</button>
+      <button id="cancelDelete" class="modal-button cancel">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Cross-Group Warning Modal -->
+<div id="crossGroupModal" class="modal-overlay">
+  <div class="modal-content cross-group-modal">
+    <div class="modal-icon">🚫</div>
+    <div class="modal-title cross-group-title">Wrong Group Assignment</div>
+    <div id="crossGroupMessage" class="modal-message">
+      <!-- Message will be inserted here -->
+    </div>
+    <div id="crossGroupStudentInfo" class="modal-student-info cross-group-info">
+      <!-- Student info will be inserted here -->
+    </div>
+    
+    <div class="modal-inputs">
+      <div class="modal-input-group">
+        <label for="correctTeacherMatricule">Correct Teacher Matricule:</label>
+        <input type="text" id="correctTeacherMatricule" class="modal-input" placeholder="Enter ITCheckListST13G13 or ITCheckListST13G24">
+      </div>
+      <div class="modal-input-group">
+        <label for="correctGroup">Student's Group:</label>
+        <input type="text" id="correctGroup" class="modal-input" placeholder="Enter student's group">
+      </div>
+    </div>
+
+    <div class="attendance-question">
+      <div class="modal-message">Is the student present in this session?</div>
+      <div class="attendance-buttons">
+        <button id="attendanceYes" class="attendance-btn yes">Yes, Present</button>
+        <button id="attendanceNo" class="attendance-btn no">No, Absent</button>
+      </div>
+    </div>
+
+    <div class="modal-buttons">
+      <button id="saveCrossGroup" class="modal-button confirm" disabled>Save to Correct Table</button>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <!-- 🔍 Search Section -->
+  <div class="search-section">
+    <h2>🔍 Find Your Class Info</h2>
+    <input type="text" id="searchInput" placeholder="Enter your matricule number">
+    <button id="searchButton">Search</button>
+    
+    <!-- Teacher Inputs (Hidden by default) -->
+    <div id="teacherInputs" class="teacher-inputs" style="display: none;">
+      <input type="text" id="groupInput" placeholder="Enter group number">
+      <button id="addStudentButton">Add Student</button>
+      <button id="saveButton" class="save-button">💾 Save Table</button>
+    </div>
+    
+    <div id="result"></div>
+    <!-- Teacher list will be displayed here -->
+    <div id="teacherListContainer"></div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
