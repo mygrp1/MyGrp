@@ -35,6 +35,30 @@
   </div>
 </button>
 
+<!-- Student Hamburger Menu Button -->
+<button class="hamburger-menu student-hamburger" id="studentHamburgerMenu" style="display: none;">
+  <div class="simple-lines">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  
+  <!-- Walking figure (hidden by default) -->
+  <div class="walking-figure">
+    <div class="line head-line">
+      <div class="hat"></div>
+    </div>
+    <div class="line body-line">
+      <div class="hand left-hand"></div>
+      <div class="hand right-hand"></div>
+    </div>
+    <div class="line legs-line">
+      <div class="leg left-leg"></div>
+      <div class="leg right-leg"></div>
+    </div>
+  </div>
+</button>
+
   <!-- Sidebar for Week Management -->
 <div class="sidebar" id="sidebar">
   <div class="sidebar-header">
@@ -52,6 +76,24 @@
   <!-- Sidebar Overlay -->
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
+<!-- Student Sidebar for Group Selection -->
+<div class="sidebar student-sidebar" id="studentSidebar">
+  <div class="sidebar-header">
+    <h3>📅 Select Your Group</h3>
+    <button id="closeStudentSidebar" class="close-sidebar">✕</button>
+  </div>
+  
+  <div class="group-buttons" id="groupButtons">
+    <button class="group-btn" data-group="1">Group 1</button>
+    <button class="group-btn" data-group="2">Group 2</button>
+    <button class="group-btn" data-group="3">Group 3</button>
+    <button class="group-btn" data-group="4">Group 4</button>
+  </div>
+</div>
+
+<!-- Student Sidebar Overlay -->
+<div class="sidebar-overlay" id="studentSidebarOverlay"></div>
+
 <!-- Week Delete Confirmation Modal -->
 <div id="deleteWeekModal" class="modal-overlay">
   <div class="modal-content">
@@ -68,7 +110,7 @@
   </div>
 </div>
 
-<!-- Delete Confirmation Modal -->
+
 <div id="deleteModal" class="modal-overlay">
   <div class="modal-content">
     <div class="modal-icon">⚠️</div>
@@ -138,6 +180,9 @@
     <div id="result"></div>
     <!-- Teacher list will be displayed here -->
     <div id="teacherListContainer"></div>
+    
+    <!-- Student Schedule Display Area -->
+    <div id="studentScheduleDisplay"></div>
   </div>
 </div>
 
