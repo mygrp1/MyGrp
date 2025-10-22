@@ -1010,6 +1010,103 @@ document.addEventListener('DOMContentLoaded', () => {
     return { chemistryLab, physicsLab, week1, week2 };
   }
 
+// === MODE MANAGEMENT FUNCTIONS ===
+
+function activateTeacherMode(teacherMatricule) {
+  // Deactivate student mode first
+  deactivateStudentMode();
+  
+  // Activate teacher mode
+  currentTeacherMode = teacherMatricule;
+  
+  // Initialize teacherStudentList from current week data
+  const currentWeekData = weeksData[currentTeacherMode]?.[currentWeek];
+  if (currentWeekData && currentWeekData.students) {
+    teacherStudentList = currentWeekData.students;
+  } else {
+    teacherStudentList = [];
+  }
+  
+  result.innerHTML = `<div class="teacher-mode">🎓 Teacher Mode Activated (${teacherMatricule})</div>`;
+  searchInput.value = '';
+  searchInput.placeholder = "Enter student matricule";
+  teacherInputs.style.display = 'flex';
+  
+  // Show teacher hamburger button
+  showWeekMenu();
+  loadWeek(currentWeek);
+  
+  // Hide student elements
+  if (studentHamburgerMenu) {
+    studentHamburgerMenu.style.display = 'none';
+  }
+  
+  // Clear student schedule display
+  const studentScheduleDisplay = document.getElementById('studentScheduleDisplay');
+  if (studentScheduleDisplay) {
+    studentScheduleDisplay.remove();
+  }
+  
+  currentStudent = null;
+}
+
+function activateStudentMode(student) {
+  // Deactivate teacher mode first
+  deactivateTeacherMode();
+  
+  // Activate student mode
+  currentStudent = student;
+  
+  // Clear teacher elements
+  teacherInputs.style.display = 'none';
+  teacherListContainer.innerHTML = '';
+  
+  // Hide teacher hamburger
+  if (hamburgerMenu) {
+    hamburgerMenu.style.display = 'none';
+  }
+  
+  // Show student hamburger button
+  if (studentHamburgerMenu) {
+    studentHamburgerMenu.style.display = 'flex';
+  }
+  
+  // Display student results
+  displayStudentResults(student);
+}
+
+function deactivateTeacherMode() {
+  currentTeacherMode = null;
+  teacherStudentList = [];
+  teacherInputs.style.display = 'none';
+  teacherListContainer.innerHTML = '';
+  
+  // Hide teacher hamburger
+  if (hamburgerMenu) {
+    hamburgerMenu.style.display = 'none';
+  }
+  
+  // Close teacher sidebar if open
+  hideSidebar();
+}
+
+function deactivateStudentMode() {
+  currentStudent = null;
+  
+  // Hide student hamburger
+  if (studentHamburgerMenu) {
+    studentHamburgerMenu.style.display = 'none';
+  }
+  
+  // Close student sidebar if open
+  hideStudentSidebar();
+  
+  // Clear student schedule display
+  const studentScheduleDisplay = document.getElementById('studentScheduleDisplay');
+  if (studentScheduleDisplay) {
+    studentScheduleDisplay.remove();
+  }
+}
   function formatNameForTeacher(name, pname) {
     const formattedName = name.toUpperCase();
     const formattedPname = pname.charAt(0).toUpperCase() + pname.slice(1).toLowerCase();
@@ -1203,7 +1300,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // === SEARCH AND STUDENT ADDITION FUNCTIONS ===
 
-  // Search for student or activate teacher mode
+   // Search for student or activate teacher mode
   function searchInfo() {
     const mat = searchInput.value.trim();
     result.textContent = "";
@@ -1215,24 +1312,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Check if it's a teacher matricule
     if (teacherMatricules.includes(mat)) {
-      currentTeacherMode = mat;
-      
-      // Initialize teacherStudentList from current week data
-      const currentWeekData = weeksData[currentTeacherMode]?.[currentWeek];
-      if (currentWeekData && currentWeekData.students) {
-        teacherStudentList = currentWeekData.students;
-      } else {
-        teacherStudentList = [];
-      }
-      
-      result.innerHTML = `<div class="teacher-mode">🎓 Teacher Mode Activated (${mat})</div>`;
-      searchInput.value = '';
-      searchInput.placeholder = "Enter student matricule";
-      teacherInputs.style.display = 'flex';
-      
-      // Show hamburger button for BOTH teachers
-      showWeekMenu();
-      loadWeek(currentWeek);
+      activateTeacherMode(mat);
       return;
     }
 
@@ -1242,7 +1322,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // Teacher mode - add student to list
+    // If we're in teacher mode and found a student, add to teacher list
     if (currentTeacherMode) {
       // Get current students from BOTH data structures to check for duplicates
       const currentWeekData = weeksData[currentTeacherMode]?.[currentWeek];
@@ -1289,25 +1369,8 @@ document.addEventListener('DOMContentLoaded', () => {
         window.currentStudentToAdd = student;
       }
     } else {
-      // Student mode - show original info and enable student hamburger
-      currentStudent = student;
-      
-      const existingSchedule = document.getElementById('studentScheduleDisplay');
-      if (existingSchedule) {
-        existingSchedule.remove();
-      }
-      
-      displayStudentResults(student);
-      
-      // Show student hamburger button
-      if (studentHamburgerMenu) {
-        studentHamburgerMenu.style.display = 'flex';
-      }
-      
-      // Hide teacher hamburger
-      if (hamburgerMenu) {
-        hamburgerMenu.style.display = 'none';
-      }
+      // Activate student mode
+      activateStudentMode(student);
     }
   }
 
@@ -1435,16 +1498,6 @@ document.addEventListener('DOMContentLoaded', () => {
     result.innerHTML += `<p class="result-line" style="animation-delay:${lines.length * 0.4}s">Matricule: ${student.MAT}</p>`;
     result.innerHTML += `<p class="result-line" style="animation-delay:${(lines.length + 1) * 0.4}s">🧪 Chemistry Lab: ${labInfo.chemistryLab}</p>`;
     result.innerHTML += `<p class="result-line" style="animation-delay:${(lines.length + 2) * 0.4}s">⚛️ Physics Lab: ${labInfo.physicsLab}</p>`;
-    
-    // Show student hamburger button
-    if (studentHamburgerMenu) {
-      studentHamburgerMenu.style.display = 'flex';
-    }
-    
-    // Hide teacher hamburger if visible
-    if (hamburgerMenu) {
-      hamburgerMenu.style.display = 'none';
-    }
     
     // Add the lab timers
     const timers = initializeLabTimers(student);
@@ -1779,6 +1832,14 @@ document.querySelectorAll('.group-btn').forEach(button => {
 
   // Start teacher hamburger animation
   startHamburgerAnimation();
+    // Initialize both hamburger menus as hidden
+  if (hamburgerMenu) {
+    hamburgerMenu.style.display = 'none';
+  }
+
+  if (studentHamburgerMenu) {
+    studentHamburgerMenu.style.display = 'none';
+  }
 });
 
 // Walking animation for hamburger menu
