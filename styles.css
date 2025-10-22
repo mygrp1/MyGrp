@@ -1107,3 +1107,389 @@ h3 {
         letter-spacing: 0.5px;
     }
 }
+/* === Student Sidebar Styles === */
+.student-sidebar {
+  position: fixed;
+  top: 0;
+  right: -400px;
+  width: 400px;
+  height: 100vh;
+  background: white;
+  box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+  transition: right 0.3s ease;
+  z-index: 1002;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.student-sidebar.active {
+  right: 0;
+}
+
+/* Group Buttons */
+.group-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.group-btn {
+  padding: 12px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.group-btn:hover {
+  background: #5a6fd8;
+  transform: translateY(-2px);
+}
+
+.group-btn.active {
+  background: #ffc420;
+  color: #333;
+}
+
+/* Schedule Table */
+.schedule-table {
+  margin-top: 20px;
+}
+
+.schedule-day {
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  overflow: hidden;
+  border: 1px solid #e9ecef;
+}
+
+.day-header {
+  background: #4CAF50;
+  color: white;
+  padding: 12px 15px;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.schedule-sessions {
+  padding: 15px;
+}
+
+.session-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.session-item:last-child {
+  border-bottom: none;
+}
+
+.session-time {
+  font-weight: bold;
+  color: #333;
+  min-width: 120px;
+}
+
+.session-course {
+  flex: 1;
+  text-align: left;
+  padding: 0 15px;
+}
+
+.session-location {
+  color: #666;
+  font-style: italic;
+  min-width: 100px;
+  text-align: right;
+}
+
+.session-group {
+  background: #667eea;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  margin-left: 5px;
+}
+
+/* Student Hamburger Menu */
+.student-hamburger {
+  position: fixed;
+  top: 70px;
+  right: 20px;
+  background: transparent;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  padding: 0;
+  cursor: pointer;
+  z-index: 1001;
+  transition: all 0.3s ease;
+  display: none;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.student-hamburger .simple-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 20px;
+  transition: all 0.3s ease;
+}
+
+.student-hamburger .simple-lines span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: #333;
+  transition: all 0.3s ease;
+}
+
+.student-hamburger .walking-figure {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.student-hamburger .walking-figure .line {
+  position: absolute;
+  background-color: #333;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.student-hamburger .walking-figure .head-line {
+  width: 20px;
+  height: 2px;
+  top: 8px;
+  z-index: 3;
+}
+
+.student-hamburger .walking-figure .hat {
+  position: absolute;
+  width: 12px;
+  height: 6px;
+  background-color: #333;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 3px 3px 0 0;
+}
+
+.student-hamburger .walking-figure .body-line {
+  width: 16px;
+  height: 2px;
+  top: 16px;
+  z-index: 2;
+}
+
+.student-hamburger .walking-figure .hand {
+  position: absolute;
+  width: 1px;
+  height: 8px;
+  background-color: #333;
+  top: -3px;
+  transform-origin: top center;
+}
+
+.student-hamburger .walking-figure .left-hand {
+  left: -4px;
+}
+
+.student-hamburger .walking-figure .right-hand {
+  right: -4px;
+}
+
+.student-hamburger .walking-figure .legs-line {
+  width: 14px;
+  height: 2px;
+  top: 24px;
+  z-index: 1;
+}
+
+.student-hamburger .walking-figure .leg {
+  position: absolute;
+  width: 1px;
+  height: 12px;
+  background-color: #333;
+  top: 0;
+  transform-origin: top center;
+}
+
+.student-hamburger .walking-figure .left-leg {
+  left: 3px;
+}
+
+.student-hamburger .walking-figure .right-leg {
+  right: 3px;
+}
+
+.student-hamburger:hover .simple-lines {
+  opacity: 0;
+  transform: scale(0.5);
+}
+
+.student-hamburger:hover .walking-figure {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+.student-sidebar.active ~ .student-hamburger {
+  display: none;
+}
+
+/* Student Sidebar Overlay */
+#studentSidebarOverlay {
+  z-index: 1001;
+}
+
+/* Student Schedule Display in Main Page */
+#studentScheduleDisplay {
+  margin-top: 30px;
+  width: 100%;
+  max-width: 1100px;
+}
+
+/* Schedule Display in Main Page */
+.schedule-container {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 25px;
+  border-left: 6px solid #667eea;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  margin-top: 20px;
+}
+
+.schedule-container h3 {
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 1.4rem;
+}
+
+/* Responsive for student sidebar */
+@media (max-width: 768px) {
+  .student-sidebar {
+    width: 100%;
+    right: -100%;
+  }
+  
+  .group-buttons {
+    grid-template-columns: 1fr;
+  }
+  
+  .session-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+  
+  .session-time, .session-course, .session-location {
+    width: 100%;
+    text-align: left;
+  }
+  
+  .student-hamburger {
+    top: 15px;
+    right: 15px;
+  }
+  
+  .schedule-container {
+    padding: 15px;
+  }
+  
+  .schedule-container h3 {
+    font-size: 1.2rem;
+  }
+}
+/* Timetable Styles */
+.timetable {
+  margin-top: 20px;
+  overflow-x: auto;
+}
+
+.schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 2px solid #333;
+  font-size: 14px;
+}
+
+.schedule-table th,
+.schedule-table td {
+  border: 1px solid #ddd;
+  padding: 12px 8px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.day-header {
+  background: #4CAF50;
+  color: white;
+  font-weight: bold;
+  min-width: 100px;
+}
+
+.time-header {
+  background: #667eea;
+  color: white;
+  font-weight: bold;
+  min-width: 120px;
+}
+
+.day-cell {
+  background: #f8f9fa;
+  font-weight: bold;
+  color: #333;
+}
+
+.session-cell {
+  background: #e8f5e9;
+  color: #333;
+  min-width: 150px;
+}
+
+.session-cell small {
+  color: #666;
+  font-size: 12px;
+}
+
+.empty-cell {
+  background: #f5f5f5;
+  color: #999;
+  font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .schedule-table {
+    font-size: 12px;
+  }
+  
+  .schedule-table th,
+  .schedule-table td {
+    padding: 8px 4px;
+  }
+  
+  .session-cell small {
+    font-size: 10px;
+  }
+}
