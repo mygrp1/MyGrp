@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   // Student data array (will be added by user)
   const data = [
+    { MAT: "222231694213", NAME: "BOUREZG", PNAME: "AGHILES", SECT: "13", GRP_TP: "Unknown" },
     { MAT: "242431653209", NAME: "ZERROUK", PNAME: "MANEL", SECT: "13", GRP_TP: "F" },
     { MAT: "252531643819", NAME: "ABBES", PNAME: "ABDEL MOUMENE", SECT: "13", GRP_TP: "B" },
     { MAT: "252531471101", NAME: "ABDELAZIZ", PNAME: "YOUCEF ISLEM", SECT: "13", GRP_TP: "C" },
@@ -2073,3 +2074,4 @@ function getNextLabDateSmart(labType, grpTP) {
 function isABC(grpTP) {
     return ["A", "B", "C"].includes(grpTP);
 }
+
