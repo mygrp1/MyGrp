@@ -235,21 +235,149 @@ document.addEventListener('DOMContentLoaded', () => {
   { MAT: "242531877914", NAME: "ZERGOUG", PNAME: "MARIA", SECT: "13", GRP_TP: "B" },
   { MAT: "252531478210", NAME: "ZIANE", PNAME: "ROMAISSA", SECT: "13", GRP_TP: "E" },
 
-  ]; // Add your student data here
+  ]; 
+
 
   // Teacher matricules
   const teacherMatricules = ["ITCheckListST13G24", "ITCheckListST13G13"];
+  
+  // Schedule Data
+  let currentStudent = null;
+
+  const scheduleData = {
+    "1": {
+      name: "Group 1",
+      schedule: {
+        "Saturday": [
+          { time: "8:00 - 9:30", course: "TD Analysis", location: "Class 373", groups: "1" },
+          { time: "9:40 - 11:10", course: "TD Chemistry", location: "Class 373", groups: "1" },
+          { time: "11:20 - 12:50", course: "Analysis Course", location: "Runway J", groups: "1,2,3,4" }
+        ],
+        "Sunday": [
+          { time: "9:40 - 11:10", course: "Physics Course", location: "Runway P", groups: "1,2,3,4" },
+          { time: "11:20 - 12:50", course: "TD Physics", location: "Class 441", groups: "1" },
+          { time: "13:00 - 14:30", course: "TD Analysis", location: "Class 373", groups: "1" }
+        ],
+        "Monday": [
+          { time: "14:30 - 17:30", course: "TP", location: "Lab", groups: "1,2,3,4" }
+        ],
+        "Tuesday": [
+          { time: "12:00 - 14:30", course: "IT Online Course", location: "Online", groups: "1,2,3,4" }
+        ],
+        "Wednesday": [
+          { time: "8:00 - 9:30", course: "TD Algebra", location: "Class 215", groups: "1" },
+          { time: "9:40 - 11:10", course: "Algebra Course", location: "Class 238T", groups: "1,2,3,4" }
+        ],
+        "Thursday": [
+          { time: "8:00 - 9:30", course: "TD Chemistry", location: "Class 243", groups: "1" },
+          { time: "9:40 - 11:10", course: "TD Physics", location: "Class 243", groups: "1" },
+          { time: "11:20 - 12:50", course: "Chemistry Course", location: "Runway G", groups: "1,2,3,4" }
+        ]
+      }
+    },
+    "2": {
+      name: "Group 2",
+      schedule: {
+        "Saturday": [
+          { time: "8:00 - 9:30", course: "TD Analysis", location: "Class 375", groups: "2" },
+          { time: "9:40 - 11:10", course: "TD Chemistry", location: "Class 375", groups: "2" },
+          { time: "11:20 - 12:50", course: "Analysis Course", location: "Runway J", groups: "1,2,3,4" }
+        ],
+        "Sunday": [
+          { time: "9:40 - 11:10", course: "Physics Course", location: "Runway P", groups: "1,2,3,4" },
+          { time: "11:20 - 12:50", course: "TD Physics", location: "Class 443", groups: "2" },
+          { time: "13:00 - 14:30", course: "TD Analysis", location: "Class 375", groups: "2" }
+        ],
+        "Monday": [
+          { time: "14:30 - 17:30", course: "TP", location: "Lab", groups: "1,2,3,4" }
+        ],
+        "Tuesday": [
+          { time: "12:00 - 14:30", course: "IT Online Course", location: "Online", groups: "1,2,3,4" }
+        ],
+        "Wednesday": [
+          { time: "8:00 - 9:30", course: "TD Physics", location: "Class 243", groups: "2" },
+          { time: "9:40 - 11:10", course: "Algebra Course", location: "Class 238T", groups: "1,2,3,4" }
+        ],
+        "Thursday": [
+          { time: "8:00 - 9:30", course: "TD Chemistry", location: "Class 245", groups: "2" },
+          { time: "9:40 - 11:10", course: "TD Algebra", location: "Class 245", groups: "2" },
+          { time: "11:20 - 12:50", course: "Chemistry Course", location: "Runway G", groups: "1,2,3,4" }
+        ]
+      }
+    },
+    "3": {
+      name: "Group 3",
+      schedule: {
+        "Saturday": [
+          { time: "8:00 - 9:30", course: "TD Chemistry", location: "Class 377", groups: "3" },
+          { time: "9:40 - 11:10", course: "TD Analysis", location: "Class 377", groups: "3" },
+          { time: "11:20 - 12:50", course: "Analysis Course", location: "Runway J", groups: "1,2,3,4" }
+        ],
+        "Sunday": [
+          { time: "9:40 - 11:10", course: "Physics Course", location: "Runway P", groups: "1,2,3,4" },
+          { time: "11:20 - 12:50", course: "TD Analysis", location: "Class 445", groups: "3" },
+          { time: "13:00 - 14:30", course: "TD Physics", location: "Class 377", groups: "3" }
+        ],
+        "Monday": [
+          { time: "14:30 - 17:30", course: "TP", location: "Lab", groups: "1,2,3,4" }
+        ],
+        "Tuesday": [
+          { time: "12:00 - 14:30", course: "IT Online Course", location: "Online", groups: "1,2,3,4" }
+        ],
+        "Wednesday": [
+          { time: "8:00 - 9:30", course: "TD Physics", location: "Class 245", groups: "3" },
+          { time: "9:40 - 11:10", course: "Algebra Course", location: "Class 238T", groups: "1,2,3,4" }
+        ],
+        "Thursday": [
+          { time: "8:00 - 9:30", course: "TD Algebra", location: "Class 247", groups: "3" },
+          { time: "9:40 - 11:10", course: "TD Chemistry", location: "Class 247", groups: "3" },
+          { time: "11:20 - 12:50", course: "Chemistry Course", location: "Runway G", groups: "1,2,3,4" }
+        ]
+      }
+    },
+    "4": {
+      name: "Group 4",
+      schedule: {
+        "Saturday": [
+          { time: "8:00 - 9:30", course: "TD Chemistry", location: "Class 379", groups: "4" },
+          { time: "9:40 - 11:10", course: "TD Analysis", location: "Class 379", groups: "4" },
+          { time: "11:20 - 12:50", course: "Analysis Course", location: "Runway J", groups: "1,2,3,4" }
+        ],
+        "Sunday": [
+          { time: "9:40 - 11:10", course: "Physics Course", location: "Runway P", groups: "1,2,3,4" },
+          { time: "11:20 - 12:50", course: "TD Analysis", location: "Class 449", groups: "4" },
+          { time: "13:00 - 14:30", course: "TD Physics", location: "Class 379", groups: "4" }
+        ],
+        "Monday": [
+          { time: "14:30 - 17:30", course: "TP", location: "Lab", groups: "1,2,3,4" }
+        ],
+        "Tuesday": [
+          { time: "12:00 - 14:30", course: "IT Online Course", location: "Online", groups: "1,2,3,4" }
+        ],
+        "Wednesday": [
+          { time: "8:00 - 9:30", course: "TD Algebra", location: "Class 259", groups: "4" },
+          { time: "9:40 - 11:10", course: "Algebra Course", location: "Class 238T", groups: "1,2,3,4" }
+        ],
+        "Thursday": [
+          { time: "8:00 - 9:30", course: "TD Physics", location: "Class 265", groups: "4" },
+          { time: "9:40 - 11:10", course: "TD Chemistry", location: "Class 265", groups: "4" },
+          { time: "11:20 - 12:50", course: "Chemistry Course", location: "Runway G", groups: "1,2,3,4" }
+        ]
+      }
+    }
+  };
+
   let currentTeacherMode = null;
   let teacherStudentList = [];
   let studentToDeleteIndex = null;
   let crossGroupStudent = null;
   let attendanceStatus = null;
-  
-// Week management data - for BOTH teachers
-let weeksData = {
-  "ITCheckListST13G24": {},
-  "ITCheckListST13G13": {}
-};
+
+  // Week management data - for BOTH teachers
+  let weeksData = {
+    "ITCheckListST13G24": {},
+    "ITCheckListST13G13": {}
+  };
   
   let currentWeek = 1;
 
@@ -293,42 +421,52 @@ let weeksData = {
   const cancelWeekDeleteBtn = document.getElementById('cancelWeekDelete');
   let weekToDelete = null;
 
+  // Student elements
+  const studentSidebar = document.getElementById('studentSidebar');
+  const studentSidebarOverlay = document.getElementById('studentSidebarOverlay');
+  const closeStudentSidebar = document.getElementById('closeStudentSidebar');
+  const groupButtons = document.getElementById('groupButtons');
+  const studentScheduleTable = document.getElementById('studentScheduleTable');
+  const studentHamburgerMenu = document.getElementById('studentHamburgerMenu');
+
   // === HAMBURGER MENU FUNCTIONS ===
 
-// Show sidebar - for BOTH teacher modes
-function showSidebar() {
-  if (sidebar && currentTeacherMode) {
-    sidebar.classList.add('active');
-    sidebarOverlay.classList.add('active');
-    document.body.style.overflow = 'hidden';
-    
-    // Update sidebar title with teacher name
-    const sidebarTitle = document.querySelector('.sidebar h3');
-    if (sidebarTitle) {
-      sidebarTitle.textContent = `${currentTeacherMode} - Week Management`;
-    }
-    
-    // Hide hamburger button
-    if (hamburgerMenu) {
-      hamburgerMenu.style.display = 'none';
-    }
-  }
-}
-// Hide sidebar with 200ms delay
-function hideSidebar() {
-  if (sidebar) {
-    sidebar.classList.remove('active');
-    sidebarOverlay.classList.remove('active');
-    document.body.style.overflow = '';
-    
-    // 200ms delay before showing hamburger button again
-    setTimeout(() => {
-      if (hamburgerMenu && currentTeacherMode) {  // Changed this line
-        hamburgerMenu.style.display = 'flex';
+  // Show sidebar - for BOTH teacher modes
+  function showSidebar() {
+    if (sidebar && currentTeacherMode) {
+      sidebar.classList.add('active');
+      sidebarOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      
+      // Update sidebar title with teacher name
+      const sidebarTitle = document.querySelector('.sidebar h3');
+      if (sidebarTitle) {
+        sidebarTitle.textContent = `${currentTeacherMode} - Week Management`;
       }
-    }, 200);
+      
+      // Hide hamburger button
+      if (hamburgerMenu) {
+        hamburgerMenu.style.display = 'none';
+      }
+    }
   }
-}
+
+  // Hide sidebar with 200ms delay
+  function hideSidebar() {
+    if (sidebar) {
+      sidebar.classList.remove('active');
+      sidebarOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+      
+      // 200ms delay before showing hamburger button again
+      setTimeout(() => {
+        if (hamburgerMenu && currentTeacherMode) {
+          hamburgerMenu.style.display = 'flex';
+        }
+      }, 200);
+    }
+  }
+
   // === MODAL FUNCTIONS ===
 
   function showDeleteModal(student, index) {
@@ -413,15 +551,15 @@ function hideSidebar() {
 
   // === WEEK MANAGEMENT FUNCTIONS ===
 
-// Show week menu for BOTH teachers
-function showWeekMenu() {
-  if (hamburgerMenu && currentTeacherMode) {
-    hamburgerMenu.style.display = 'flex';
-    updateWeekButtons();
-  } else if (hamburgerMenu) {
-    hamburgerMenu.style.display = 'none';
+  // Show week menu for BOTH teachers
+  function showWeekMenu() {
+    if (hamburgerMenu && currentTeacherMode) {
+      hamburgerMenu.style.display = 'flex';
+      updateWeekButtons();
+    } else if (hamburgerMenu) {
+      hamburgerMenu.style.display = 'none';
+    }
   }
-}
 
   function hideWeekMenu() {
     if (hamburgerMenu) {
@@ -585,20 +723,19 @@ function showWeekMenu() {
     }
   }
 
-function loadWeek(weekNumber) {
-  if (!currentTeacherMode) return;
-  
-  currentWeek = weekNumber;
-  const weekData = weeksData[currentTeacherMode][weekNumber] || [];
-  
-  const displayName = weekData.customName || `Week ${weekNumber}`;
-  
-  updateAllWeekDisplays(weekNumber, displayName);
-  
-  // FIX: Call displayTeacherList instead of displayTeacherData
-  displayTeacherList();
-  updateWeekButtons();
-}
+  function loadWeek(weekNumber) {
+    if (!currentTeacherMode) return;
+    
+    currentWeek = weekNumber;
+    const weekData = weeksData[currentTeacherMode][weekNumber] || [];
+    
+    const displayName = weekData.customName || `Week ${weekNumber}`;
+    
+    updateAllWeekDisplays(weekNumber, displayName);
+    
+    displayTeacherList();
+    updateWeekButtons();
+  }
 
   function displayTeacherData(weekData) {
     if (!result) return;
@@ -727,34 +864,33 @@ function loadWeek(weekNumber) {
     localStorage.setItem('weeksData', JSON.stringify(weeksData));
   }
 
-function addWeek() {
-  if (!currentTeacherMode) return;
-  
-  const teacherWeeks = weeksData[currentTeacherMode] || {};
-  const weekNumbers = Object.keys(teacherWeeks).map(Number).sort((a, b) => a - b);
-  const newWeekNumber = weekNumbers.length > 0 ? Math.max(...weekNumbers) + 1 : 1;
-  
-  const newWeekData = {
-    customName: `Week ${newWeekNumber}`,
-    students: []
-  };
-  
-  if (!weeksData[currentTeacherMode]) {
-    weeksData[currentTeacherMode] = {};
+  function addWeek() {
+    if (!currentTeacherMode) return;
+    
+    const teacherWeeks = weeksData[currentTeacherMode] || {};
+    const weekNumbers = Object.keys(teacherWeeks).map(Number).sort((a, b) => a - b);
+    const newWeekNumber = weekNumbers.length > 0 ? Math.max(...weekNumbers) + 1 : 1;
+    
+    const newWeekData = {
+      customName: `Week ${newWeekNumber}`,
+      students: []
+    };
+    
+    if (!weeksData[currentTeacherMode]) {
+      weeksData[currentTeacherMode] = {};
+    }
+    
+    weeksData[currentTeacherMode][newWeekNumber] = newWeekData;
+    currentWeek = newWeekNumber;
+    teacherStudentList = [];
+    
+    localStorage.setItem('weeksData', JSON.stringify(weeksData));
+    updateWeekButtons();
+    
+    displayTeacherList();
+    
+    result.innerHTML = `<div class="teacher-mode">✅ Week ${newWeekNumber} created successfully!</div>`;
   }
-  
-  weeksData[currentTeacherMode][newWeekNumber] = newWeekData;
-  currentWeek = newWeekNumber;
-  teacherStudentList = [];
-  
-  localStorage.setItem('weeksData', JSON.stringify(weeksData));
-  updateWeekButtons();
-  
-  // FIX: Call displayTeacherList instead of displayTeacherList (typo)
-  displayTeacherList(); // This was probably a typo
-  
-  result.innerHTML = `<div class="teacher-mode">✅ Week ${newWeekNumber} created successfully!</div>`;
-}
 
   function deleteWeek(weekNumber) {
     if (!currentTeacherMode) return;
@@ -1067,95 +1203,113 @@ function addWeek() {
 
   // === SEARCH AND STUDENT ADDITION FUNCTIONS ===
 
-// Search for student or activate teacher mode
-function searchInfo() {
-  const mat = searchInput.value.trim();
-  result.textContent = "";
+  // Search for student or activate teacher mode
+  function searchInfo() {
+    const mat = searchInput.value.trim();
+    result.textContent = "";
 
-  if (!mat) {
-    result.textContent = "⚠️ Please enter a matricule number.";
-    return;
-  }
+    if (!mat) {
+      result.textContent = "⚠️ Please enter a matricule number.";
+      return;
+    }
 
-// Check if it's a teacher matricule
-if (teacherMatricules.includes(mat)) {
-  currentTeacherMode = mat;
-  
-  // Initialize teacherStudentList from current week data
-  const currentWeekData = weeksData[currentTeacherMode]?.[currentWeek];
-  if (currentWeekData && currentWeekData.students) {
-    teacherStudentList = currentWeekData.students;
-  } else {
-    teacherStudentList = [];
-  }
-  
-  result.innerHTML = `<div class="teacher-mode">🎓 Teacher Mode Activated (${mat})</div>`;
-  searchInput.value = '';
-  searchInput.placeholder = "Enter student matricule";
-  teacherInputs.style.display = 'flex';
-  
-  // Show hamburger button for BOTH teachers
-  showWeekMenu();
-  loadWeek(currentWeek);
-  return;
-}
-  const student = data.find(s => s.MAT === mat);
-  if (!student) {
-    result.textContent = `❌ No student found with matricule "${mat}".`;
-    return;
-  }
+    // Check if it's a teacher matricule
+    if (teacherMatricules.includes(mat)) {
+      currentTeacherMode = mat;
+      
+      // Initialize teacherStudentList from current week data
+      const currentWeekData = weeksData[currentTeacherMode]?.[currentWeek];
+      if (currentWeekData && currentWeekData.students) {
+        teacherStudentList = currentWeekData.students;
+      } else {
+        teacherStudentList = [];
+      }
+      
+      result.innerHTML = `<div class="teacher-mode">🎓 Teacher Mode Activated (${mat})</div>`;
+      searchInput.value = '';
+      searchInput.placeholder = "Enter student matricule";
+      teacherInputs.style.display = 'flex';
+      
+      // Show hamburger button for BOTH teachers
+      showWeekMenu();
+      loadWeek(currentWeek);
+      return;
+    }
 
-  // Teacher mode - add student to list
-  if (currentTeacherMode) {
-    // Get current students from BOTH data structures to check for duplicates
-    const currentWeekData = weeksData[currentTeacherMode]?.[currentWeek];
-    let currentStudents = [];
-    
-    if (currentWeekData) {
-      if (Array.isArray(currentWeekData)) {
-        // Old structure
-        currentStudents = currentWeekData;
-      } else if (currentWeekData.students) {
-        // New structure
-        currentStudents = currentWeekData.students;
+    const student = data.find(s => s.MAT === mat);
+    if (!student) {
+      result.textContent = `❌ No student found with matricule "${mat}".`;
+      return;
+    }
+
+    // Teacher mode - add student to list
+    if (currentTeacherMode) {
+      // Get current students from BOTH data structures to check for duplicates
+      const currentWeekData = weeksData[currentTeacherMode]?.[currentWeek];
+      let currentStudents = [];
+      
+      if (currentWeekData) {
+        if (Array.isArray(currentWeekData)) {
+          // Old structure
+          currentStudents = currentWeekData;
+        } else if (currentWeekData.students) {
+          // New structure
+          currentStudents = currentWeekData.students;
+        }
+      }
+      
+      // Also check teacherStudentList as backup
+      if (currentStudents.length === 0) {
+        currentStudents = teacherStudentList;
+      }
+      
+      // Check if student already exists in the current week
+      const alreadyExists = currentStudents.some(s => s.MAT === student.MAT);
+      
+      if (alreadyExists) {
+        const { formattedName, formattedPname } = formatNameForTeacher(student.NAME, student.PNAME);
+        result.innerHTML = `
+          <div class="teacher-mode">
+            ⚠️ <strong>Student already in table!</strong><br>
+            ${formattedName} ${formattedPname} is already in the current week's list.<br>
+            Please search for a different student.
+          </div>
+        `;
+      } else {
+        const { formattedName, formattedPname } = formatNameForTeacher(student.NAME, student.PNAME);
+        
+        result.innerHTML = `
+          <div class="teacher-mode">
+            ✅ Found: ${formattedName} ${formattedPname} | Section ${student.SECT} | TP Group: ${student.GRP_TP}<br>
+            Enter <strong>GroupN (1, 2, 3, or 4)</strong> and click "Add Student"<br>
+            <small>Note: GroupN is independent from TP Group</small>
+          </div>
+        `;
+        
+        window.currentStudentToAdd = student;
+      }
+    } else {
+      // Student mode - show original info and enable student hamburger
+      currentStudent = student;
+      
+      const existingSchedule = document.getElementById('studentScheduleDisplay');
+      if (existingSchedule) {
+        existingSchedule.remove();
+      }
+      
+      displayStudentResults(student);
+      
+      // Show student hamburger button
+      if (studentHamburgerMenu) {
+        studentHamburgerMenu.style.display = 'flex';
+      }
+      
+      // Hide teacher hamburger
+      if (hamburgerMenu) {
+        hamburgerMenu.style.display = 'none';
       }
     }
-    
-    // Also check teacherStudentList as backup
-    if (currentStudents.length === 0) {
-      currentStudents = teacherStudentList;
-    }
-    
-    // Check if student already exists in the current week
-    const alreadyExists = currentStudents.some(s => s.MAT === student.MAT);
-    
-    if (alreadyExists) {
-      const { formattedName, formattedPname } = formatNameForTeacher(student.NAME, student.PNAME);
-      result.innerHTML = `
-        <div class="teacher-mode">
-          ⚠️ <strong>Student already in table!</strong><br>
-          ${formattedName} ${formattedPname} is already in the current week's list.<br>
-          Please search for a different student.
-        </div>
-      `;
-    } else {
-      const { formattedName, formattedPname } = formatNameForTeacher(student.NAME, student.PNAME);
-      
-      result.innerHTML = `
-        <div class="teacher-mode">
-          ✅ Found: ${formattedName} ${formattedPname} | Section ${student.SECT} | TP Group: ${student.GRP_TP}<br>
-          Enter <strong>GroupN (1, 2, 3, or 4)</strong> and click "Add Student"<br>
-          <small>Note: GroupN is independent from TP Group</small>
-        </div>
-      `;
-      
-      window.currentStudentToAdd = student;
-    }
-  } else {
-    // Normal student mode display
-    displayStudentResults(student);
   }
-}
 
   function addStudentWithGroup() {
     const groupInputValue = groupInput.value.trim();
@@ -1200,14 +1354,14 @@ if (teacherMatricules.includes(mat)) {
       } else if (correctTeacher === "ITCheckListST13G13") {
         correctTeacherName = "Teacher for Groups 1 & 3 (ITCheckListST13G13)";
       }
-// In the warning section of addStudentWithGroup, replace with this:
-result.innerHTML = `
-  <div class="teacher-mode" style="border: 2px solid #ff4444; background: #ffeaea; padding: 15px; border-radius: 8px;">
-    🚫 <strong>This Table Is for Group 1 Or 3 Students</strong><br><br>
-    You tried to add a student with <strong>GroupN ${groupInputValue}</strong><br>
-    Please switch to the correct teacher table.
-  </div>
-`;
+
+      result.innerHTML = `
+        <div class="teacher-mode" style="border: 2px solid #ff4444; background: #ffeaea; padding: 15px; border-radius: 8px;">
+          🚫 <strong>This Table Is for Group 1 Or 3 Students</strong><br><br>
+          You tried to add a student with <strong>GroupN ${groupInputValue}</strong><br>
+          Please switch to the correct teacher table.
+        </div>
+      `;
       window.currentStudentToAdd = null;
       return;
     }
@@ -1270,7 +1424,7 @@ result.innerHTML = `
     window.currentStudentToAdd = null;
   }
 
-function displayStudentResults(student) {
+  function displayStudentResults(student) {
     const labInfo = getLabInfo(student.GRP_TP);
     const info = `${student.NAME} ${student.PNAME} — Section ${student.SECT} — Group ${student.GRP_TP}`;
     const lines = info.split('—').map(s => s.trim());
@@ -1282,6 +1436,16 @@ function displayStudentResults(student) {
     result.innerHTML += `<p class="result-line" style="animation-delay:${(lines.length + 1) * 0.4}s">🧪 Chemistry Lab: ${labInfo.chemistryLab}</p>`;
     result.innerHTML += `<p class="result-line" style="animation-delay:${(lines.length + 2) * 0.4}s">⚛️ Physics Lab: ${labInfo.physicsLab}</p>`;
     
+    // Show student hamburger button
+    if (studentHamburgerMenu) {
+      studentHamburgerMenu.style.display = 'flex';
+    }
+    
+    // Hide teacher hamburger if visible
+    if (hamburgerMenu) {
+      hamburgerMenu.style.display = 'none';
+    }
+    
     // Add the lab timers
     const timers = initializeLabTimers(student);
     result.innerHTML += timers.physics;
@@ -1291,7 +1455,160 @@ function displayStudentResults(student) {
     setTimeout(() => {
         startLabTimers(student);
     }, 100);
+  }
+
+  // === STUDENT SIDEBAR FUNCTIONS ===
+
+  function showStudentSidebar() {
+    if (studentSidebar && currentStudent) {
+      studentSidebar.classList.add('active');
+      studentSidebarOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  function hideStudentSidebar() {
+    if (studentSidebar) {
+      studentSidebar.classList.remove('active');
+      studentSidebarOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  }
+
+function loadGroupSchedule(groupNumber) {
+  const groupData = scheduleData[groupNumber];
+  if (!groupData) return;
+  
+  // Create or update schedule display in main page
+  let existingSchedule = document.getElementById('studentScheduleDisplay');
+  if (!existingSchedule) {
+    existingSchedule = document.createElement('div');
+    existingSchedule.id = 'studentScheduleDisplay';
+    existingSchedule.className = 'schedule-container';
+    result.appendChild(existingSchedule);
+  }
+  
+  let html = `<h3>📚 Weekly Schedule for ${groupData.name}</h3>`;
+  
+  // Define all time slots
+  const timeSlots = [
+    "8:00 - 9:30",
+    "9:40 - 11:10", 
+    "11:20 - 12:50",
+    "13:00 - 14:30",
+    "14:30 - 17:30"
+  ];
+  
+  // Define days order
+  const daysOrder = ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"];
+  
+  html += `
+    <div class="timetable">
+      <table class="schedule-table">
+        <thead>
+          <tr>
+            <th class="day-header">Day/Time</th>
+  `;
+  
+  // Create time slot headers
+  timeSlots.forEach(timeSlot => {
+    html += `<th class="time-header">${timeSlot}</th>`;
+  });
+  
+  html += `
+          </tr>
+        </thead>
+        <tbody>
+  `;
+  
+  // Create rows for each day
+  daysOrder.forEach(day => {
+    html += `<tr><td class="day-cell">${day}</td>`;
+    
+    const daySchedule = groupData.schedule[day] || [];
+    
+    // For each time slot, find matching session
+    timeSlots.forEach(timeSlot => {
+      const session = daySchedule.find(s => s.time === timeSlot);
+      
+      if (session) {
+        // Format: "Course Type Location"
+        const displayText = `${session.course}<br><small>${session.location}</small>`;
+        html += `<td class="session-cell">${displayText}</td>`;
+      } else {
+        html += `<td class="empty-cell">/</td>`;
+      }
+    });
+    
+    html += `</tr>`;
+  });
+  
+  html += `
+        </tbody>
+      </table>
+    </div>
+  `;
+  
+  existingSchedule.innerHTML = html;
+  
+  // Close sidebar after selection
+  hideStudentSidebar();
 }
+
+  function startStudentHamburgerAnimation() {
+    if (!studentHamburgerMenu) return;
+
+    let animationId;
+    let isAnimating = false;
+
+    studentHamburgerMenu.addEventListener('mouseenter', function() {
+      if (isAnimating) return;
+      isAnimating = true;
+      animateStudent();
+    });
+
+    studentHamburgerMenu.addEventListener('mouseleave', function() {
+      isAnimating = false;
+      cancelAnimationFrame(animationId);
+      
+      const leftLeg = studentHamburgerMenu.querySelector('.left-leg');
+      const rightLeg = studentHamburgerMenu.querySelector('.right-leg');
+      const leftHand = studentHamburgerMenu.querySelector('.left-hand');
+      const rightHand = studentHamburgerMenu.querySelector('.right-hand');
+      const bodyLine = studentHamburgerMenu.querySelector('.body-line');
+      const headLine = studentHamburgerMenu.querySelector('.head-line');
+      
+      if (leftLeg) leftLeg.style.transform = 'rotate(0deg)';
+      if (rightLeg) rightLeg.style.transform = 'rotate(0deg)';
+      if (leftHand) leftHand.style.transform = 'rotate(0deg)';
+      if (rightHand) rightHand.style.transform = 'rotate(0deg)';
+      if (bodyLine) bodyLine.style.transform = 'translateX(-50%) rotate(0deg)';
+      if (headLine) headLine.style.transform = 'translateX(-50%) rotate(0deg)';
+    });
+
+    function animateStudent() {
+      if (!isAnimating) return;
+
+      const time = Date.now() * 0.005;
+      const leftLeg = studentHamburgerMenu.querySelector('.left-leg');
+      const rightLeg = studentHamburgerMenu.querySelector('.right-leg');
+      const leftHand = studentHamburgerMenu.querySelector('.left-hand');
+      const rightHand = studentHamburgerMenu.querySelector('.right-hand');
+      const bodyLine = studentHamburgerMenu.querySelector('.body-line');
+      const headLine = studentHamburgerMenu.querySelector('.head-line');
+
+      if (leftLeg) leftLeg.style.transform = `rotate(${Math.sin(time) * 25}deg)`;
+      if (rightLeg) rightLeg.style.transform = `rotate(${-Math.sin(time) * 25}deg)`;
+
+      if (leftHand) leftHand.style.transform = `rotate(${Math.sin(time + 1) * 8}deg)`;
+      if (rightHand) rightHand.style.transform = `rotate(${-Math.sin(time + 1) * 8}deg)`;
+
+      if (bodyLine) bodyLine.style.transform = `translateX(-50%) rotate(${Math.sin(time * 0.5) * 2}deg)`;
+      if (headLine) headLine.style.transform = `translateX(-50%) rotate(${Math.sin(time * 0.5 + 0.5) * 1.5}deg)`;
+
+      animationId = requestAnimationFrame(animateStudent);
+    }
+  }
 
   // === EVENT LISTENERS ===
 
@@ -1343,18 +1660,18 @@ function displayStudentResults(student) {
     });
   }
 
-// Hamburger menu events - available for BOTH teacher modes
-if (hamburgerMenu) {
-  // Hide hamburger by default
-  hamburgerMenu.style.display = 'none';
-  
-  hamburgerMenu.addEventListener('click', function() {
-    // Only work if teacher mode is active (BOTH teachers)
-    if (currentTeacherMode) {
-      showSidebar();
-    }
-  });
-}
+  // Hamburger menu events - available for BOTH teacher modes
+  if (hamburgerMenu) {
+    // Hide hamburger by default
+    hamburgerMenu.style.display = 'none';
+    
+    hamburgerMenu.addEventListener('click', function() {
+      // Only work if teacher mode is active (BOTH teachers)
+      if (currentTeacherMode) {
+        showSidebar();
+      }
+    });
+  }
 
   if (closeSidebar) {
     closeSidebar.addEventListener('click', hideSidebar);
@@ -1424,11 +1741,44 @@ if (hamburgerMenu) {
     });
   }
 
+  // Student event listeners
+  if (closeStudentSidebar) {
+    closeStudentSidebar.addEventListener('click', hideStudentSidebar);
+  }
+
+  if (studentSidebarOverlay) {
+    studentSidebarOverlay.addEventListener('click', hideStudentSidebar);
+  }
+
+  if (studentHamburgerMenu) {
+    studentHamburgerMenu.addEventListener('click', function() {
+      if (currentStudent) {
+        showStudentSidebar();
+      }
+    });
+  }
+
+// Add click events for group buttons
+document.querySelectorAll('.group-btn').forEach(button => {
+  button.addEventListener('click', function() {
+    const groupNumber = this.getAttribute('data-group');
+    loadGroupSchedule(groupNumber);
+  });
+});
+
+  // Start student hamburger animation
+  if (studentHamburgerMenu) {
+    startStudentHamburgerAnimation();
+  }
+
   // Load saved data from localStorage
   const savedWeeksData = localStorage.getItem('weeksData');
   if (savedWeeksData) {
     weeksData = JSON.parse(savedWeeksData);
   }
+
+  // Start teacher hamburger animation
+  startHamburgerAnimation();
 });
 
 // Walking animation for hamburger menu
@@ -1488,7 +1838,6 @@ function startHamburgerAnimation() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', startHamburgerAnimation);
 // Lab schedule countdown timers
 function initializeLabTimers(student) {
     const grpTP = student.GRP_TP;
