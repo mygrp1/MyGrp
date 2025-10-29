@@ -246,128 +246,133 @@ document.addEventListener('DOMContentLoaded', () => {
   // Schedule Data
   let currentStudent = null;
 
-  const scheduleData = {
-    "1": {
-      name: "Group 1",
-      schedule: {
-        "Saturday": [
-          { time: "8:00 - 9:30", course: "TD Analysis", location: "Class 373", groups: "1" },
-          { time: "9:40 - 11:10", course: "TD Chemistry", location: "Class 373", groups: "1" },
-          { time: "11:20 - 12:50", course: "Analysis Course", location: "Runway J", groups: "1,2,3,4" }
-        ],
-        "Sunday": [
-          { time: "9:40 - 11:10", course: "Physics Course", location: "Runway P", groups: "1,2,3,4" },
-          { time: "11:20 - 12:50", course: "TD Physics", location: "Class 441", groups: "1" },
-          { time: "13:00 - 14:30", course: "TD Analysis", location: "Class 373", groups: "1" }
-        ],
-        "Monday": [
-          { time: "14:30 - 17:30", course: "TP", location: "Lab", groups: "1,2,3,4" }
-        ],
-        "Tuesday": [
-          { time: "12:00 - 14:30", course: "IT Online Course", location: "Online", groups: "1,2,3,4" }
-        ],
-        "Wednesday": [
-          { time: "8:00 - 9:30", course: "TD Algebra", location: "Class 215", groups: "1" },
-          { time: "9:40 - 11:10", course: "Algebra Course", location: "Class 238T", groups: "1,2,3,4" }
-        ],
-        "Thursday": [
-          { time: "8:00 - 9:30", course: "TD Chemistry", location: "Class 243", groups: "1" },
-          { time: "9:40 - 11:10", course: "TD Physics", location: "Class 243", groups: "1" },
-          { time: "11:20 - 12:50", course: "Chemistry Course", location: "Runway G", groups: "1,2,3,4" }
-        ]
-      }
-    },
-    "2": {
-      name: "Group 2",
-      schedule: {
-        "Saturday": [
-          { time: "8:00 - 9:30", course: "TD Analysis", location: "Class 375", groups: "2" },
-          { time: "9:40 - 11:10", course: "TD Chemistry", location: "Class 375", groups: "2" },
-          { time: "11:20 - 12:50", course: "Analysis Course", location: "Runway J", groups: "1,2,3,4" }
-        ],
-        "Sunday": [
-          { time: "9:40 - 11:10", course: "Physics Course", location: "Runway P", groups: "1,2,3,4" },
-          { time: "11:20 - 12:50", course: "TD Physics", location: "Class 443", groups: "2" },
-          { time: "13:00 - 14:30", course: "TD Analysis", location: "Class 375", groups: "2" }
-        ],
-        "Monday": [
-          { time: "14:30 - 17:30", course: "TP", location: "Lab", groups: "1,2,3,4" }
-        ],
-        "Tuesday": [
-          { time: "12:00 - 14:30", course: "IT Online Course", location: "Online", groups: "1,2,3,4" }
-        ],
-        "Wednesday": [
-          { time: "8:00 - 9:30", course: "TD Physics", location: "Class 243", groups: "2" },
-          { time: "9:40 - 11:10", course: "Algebra Course", location: "Class 238T", groups: "1,2,3,4" }
-        ],
-        "Thursday": [
-          { time: "8:00 - 9:30", course: "TD Chemistry", location: "Class 245", groups: "2" },
-          { time: "9:40 - 11:10", course: "TD Algebra", location: "Class 245", groups: "2" },
-          { time: "11:20 - 12:50", course: "Chemistry Course", location: "Runway G", groups: "1,2,3,4" }
-        ]
-      }
-    },
-    "3": {
-      name: "Group 3",
-      schedule: {
-        "Saturday": [
-          { time: "8:00 - 9:30", course: "TD Chemistry", location: "Class 377", groups: "3" },
-          { time: "9:40 - 11:10", course: "TD Analysis", location: "Class 377", groups: "3" },
-          { time: "11:20 - 12:50", course: "Analysis Course", location: "Runway J", groups: "1,2,3,4" }
-        ],
-        "Sunday": [
-          { time: "9:40 - 11:10", course: "Physics Course", location: "Runway P", groups: "1,2,3,4" },
-          { time: "11:20 - 12:50", course: "TD Analysis", location: "Class 445", groups: "3" },
-          { time: "13:00 - 14:30", course: "TD Physics", location: "Class 377", groups: "3" }
-        ],
-        "Monday": [
-          { time: "14:30 - 17:30", course: "TP", location: "Lab", groups: "1,2,3,4" }
-        ],
-        "Tuesday": [
-          { time: "12:00 - 14:30", course: "IT Online Course", location: "Online", groups: "1,2,3,4" }
-        ],
-        "Wednesday": [
-          { time: "8:00 - 9:30", course: "TD Physics", location: "Class 245", groups: "3" },
-          { time: "9:40 - 11:10", course: "Algebra Course", location: "Class 238T", groups: "1,2,3,4" }
-        ],
-        "Thursday": [
-          { time: "8:00 - 9:30", course: "TD Algebra", location: "Class 247", groups: "3" },
-          { time: "9:40 - 11:10", course: "TD Chemistry", location: "Class 247", groups: "3" },
-          { time: "11:20 - 12:50", course: "Chemistry Course", location: "Runway G", groups: "1,2,3,4" }
-        ]
-      }
-    },
-    "4": {
-      name: "Group 4",
-      schedule: {
-        "Saturday": [
-          { time: "8:00 - 9:30", course: "TD Chemistry", location: "Class 379", groups: "4" },
-          { time: "9:40 - 11:10", course: "TD Analysis", location: "Class 379", groups: "4" },
-          { time: "11:20 - 12:50", course: "Analysis Course", location: "Runway J", groups: "1,2,3,4" }
-        ],
-        "Sunday": [
-          { time: "9:40 - 11:10", course: "Physics Course", location: "Runway P", groups: "1,2,3,4" },
-          { time: "11:20 - 12:50", course: "TD Analysis", location: "Class 449", groups: "4" },
-          { time: "13:00 - 14:30", course: "TD Physics", location: "Class 379", groups: "4" }
-        ],
-        "Monday": [
-          { time: "14:30 - 17:30", course: "TP", location: "Lab", groups: "1,2,3,4" }
-        ],
-        "Tuesday": [
-          { time: "12:00 - 14:30", course: "IT Online Course", location: "Online", groups: "1,2,3,4" }
-        ],
-        "Wednesday": [
-          { time: "8:00 - 9:30", course: "TD Algebra", location: "Class 259", groups: "4" },
-          { time: "9:40 - 11:10", course: "Algebra Course", location: "Class 238T", groups: "1,2,3,4" }
-        ],
-        "Thursday": [
-          { time: "8:00 - 9:30", course: "TD Physics", location: "Class 265", groups: "4" },
-          { time: "9:40 - 11:10", course: "TD Chemistry", location: "Class 265", groups: "4" },
-          { time: "11:20 - 12:50", course: "Chemistry Course", location: "Runway G", groups: "1,2,3,4" }
-        ]
-      }
+ // Update the schedule data for all groups
+const scheduleData = {
+  "1": {
+    name: "Group 1",
+    schedule: {
+      "Saturday": [
+        { time: "8:00 - 9:30", course: "TD Analysis", location: "Class 373", groups: "1" },
+        { time: "9:40 - 11:10", course: "TD Chemistry", location: "Class 373", groups: "1" },
+        { time: "11:20 - 12:50", course: "Analysis Course", location: "Runway J", groups: "1,2,3,4" }
+      ],
+      "Sunday": [
+        { time: "9:40 - 11:10", course: "Physics Course", location: "Runway P", groups: "1,2,3,4" },
+        { time: "11:20 - 12:50", course: "TD Physics", location: "Class 441", groups: "1" },
+        { time: "13:00 - 14:30", course: "TD Analysis", location: "Class 373", groups: "1" }
+      ],
+      "Monday": [
+        { time: "14:30 - 17:30", course: "TP", location: "Lab", groups: "1,2,3,4" }
+      ],
+      "Tuesday": [
+        { time: "8:00 - 9:30", course: "Ethical and Deontological Dimension", location: "Class", groups: "1,2,3,4" },
+        { time: "12:00 - 14:30", course: "TP Of IT", location: "Lab", groups: "1,3" }
+      ],
+      "Wednesday": [
+        { time: "8:00 - 9:30", course: "TD Algebra", location: "Class 215", groups: "1" },
+        { time: "9:40 - 11:10", course: "Algebra Course", location: "Class 238T", groups: "1,2,3,4" }
+      ],
+      "Thursday": [
+        { time: "8:00 - 9:30", course: "TD Chemistry", location: "Class 243", groups: "1" },
+        { time: "9:40 - 11:10", course: "TD Physics", location: "Class 243", groups: "1" },
+        { time: "11:20 - 12:50", course: "Chemistry Course", location: "Runway G", groups: "1,2,3,4" }
+      ]
     }
-  };
+  },
+  "2": {
+    name: "Group 2",
+    schedule: {
+      "Saturday": [
+        { time: "8:00 - 9:30", course: "TD Analysis", location: "Class 375", groups: "2" },
+        { time: "9:40 - 11:10", course: "TD Chemistry", location: "Class 375", groups: "2" },
+        { time: "11:20 - 12:50", course: "Analysis Course", location: "Runway J", groups: "1,2,3,4" }
+      ],
+      "Sunday": [
+        { time: "9:40 - 11:10", course: "Physics Course", location: "Runway P", groups: "1,2,3,4" },
+        { time: "11:20 - 12:50", course: "TD Physics", location: "Class 443", groups: "2" },
+        { time: "13:00 - 14:30", course: "TD Analysis", location: "Class 375", groups: "2" }
+      ],
+      "Monday": [
+        { time: "14:30 - 17:30", course: "TP", location: "Lab", groups: "1,2,3,4" }
+      ],
+      "Tuesday": [
+        { time: "8:00 - 9:30", course: "Ethical and Deontological Dimension", location: "Class", groups: "1,2,3,4" },
+        { time: "12:00 - 14:30", course: "TP Of IT", location: "Lab", groups: "2,4" }
+      ],
+      "Wednesday": [
+        { time: "8:00 - 9:30", course: "TD Physics", location: "Class 243", groups: "2" },
+        { time: "9:40 - 11:10", course: "Algebra Course", location: "Class 238T", groups: "1,2,3,4" }
+      ],
+      "Thursday": [
+        { time: "8:00 - 9:30", course: "TD Chemistry", location: "Class 245", groups: "2" },
+        { time: "9:40 - 11:10", course: "TD Algebra", location: "Class 245", groups: "2" },
+        { time: "11:20 - 12:50", course: "Chemistry Course", location: "Runway G", groups: "1,2,3,4" }
+      ]
+    }
+  },
+  "3": {
+    name: "Group 3",
+    schedule: {
+      "Saturday": [
+        { time: "8:00 - 9:30", course: "TD Chemistry", location: "Class 377", groups: "3" },
+        { time: "9:40 - 11:10", course: "TD Analysis", location: "Class 377", groups: "3" },
+        { time: "11:20 - 12:50", course: "Analysis Course", location: "Runway J", groups: "1,2,3,4" }
+      ],
+      "Sunday": [
+        { time: "9:40 - 11:10", course: "Physics Course", location: "Runway P", groups: "1,2,3,4" },
+        { time: "11:20 - 12:50", course: "TD Analysis", location: "Class 445", groups: "3" },
+        { time: "13:00 - 14:30", course: "TD Physics", location: "Class 377", groups: "3" }
+      ],
+      "Monday": [
+        { time: "14:30 - 17:30", course: "TP", location: "Lab", groups: "1,2,3,4" }
+      ],
+      "Tuesday": [
+        { time: "8:00 - 9:30", course: "Ethical and Deontological Dimension", location: "Class", groups: "1,2,3,4" },
+        { time: "12:00 - 14:30", course: "TP Of IT", location: "Lab", groups: "1,3" }
+      ],
+      "Wednesday": [
+        { time: "8:00 - 9:30", course: "TD Physics", location: "Class 245", groups: "3" },
+        { time: "9:40 - 11:10", course: "Algebra Course", location: "Class 238T", groups: "1,2,3,4" }
+      ],
+      "Thursday": [
+        { time: "8:00 - 9:30", course: "TD Algebra", location: "Class 247", groups: "3" },
+        { time: "9:40 - 11:10", course: "TD Chemistry", location: "Class 247", groups: "3" },
+        { time: "11:20 - 12:50", course: "Chemistry Course", location: "Runway G", groups: "1,2,3,4" }
+      ]
+    }
+  },
+  "4": {
+    name: "Group 4",
+    schedule: {
+      "Saturday": [
+        { time: "8:00 - 9:30", course: "TD Chemistry", location: "Class 379", groups: "4" },
+        { time: "9:40 - 11:10", course: "TD Analysis", location: "Class 379", groups: "4" },
+        { time: "11:20 - 12:50", course: "Analysis Course", location: "Runway J", groups: "1,2,3,4" }
+      ],
+      "Sunday": [
+        { time: "9:40 - 11:10", course: "Physics Course", location: "Runway P", groups: "1,2,3,4" },
+        { time: "11:20 - 12:50", course: "TD Analysis", location: "Class 449", groups: "4" },
+        { time: "13:00 - 14:30", course: "TD Physics", location: "Class 379", groups: "4" }
+      ],
+      "Monday": [
+        { time: "14:30 - 17:30", course: "TP", location: "Lab", groups: "1,2,3,4" }
+      ],
+      "Tuesday": [
+        { time: "8:00 - 9:30", course: "Ethical and Deontological Dimension", location: "Class", groups: "1,2,3,4" },
+        { time: "12:00 - 14:30", course: "TP Of IT", location: "Lab", groups: "2,4" }
+      ],
+      "Wednesday": [
+        { time: "8:00 - 9:30", course: "TD Algebra", location: "Class 259", groups: "4" },
+        { time: "9:40 - 11:10", course: "Algebra Course", location: "Class 238T", groups: "1,2,3,4" }
+      ],
+      "Thursday": [
+        { time: "8:00 - 9:30", course: "TD Physics", location: "Class 265", groups: "4" },
+        { time: "9:40 - 11:10", course: "TD Chemistry", location: "Class 265", groups: "4" },
+        { time: "11:20 - 12:50", course: "Chemistry Course", location: "Runway G", groups: "1,2,3,4" }
+      ]
+    }
+  }
+};
 
   let currentTeacherMode = null;
   let teacherStudentList = [];
@@ -1489,7 +1494,7 @@ function deactivateStudentMode() {
     window.currentStudentToAdd = null;
   }
 
-  function displayStudentResults(student) {
+function displayStudentResults(student) {
     const labInfo = getLabInfo(student.GRP_TP);
     const info = `${student.NAME} ${student.PNAME} — Section ${student.SECT} — Group ${student.GRP_TP}`;
     const lines = info.split('—').map(s => s.trim());
@@ -1506,11 +1511,20 @@ function deactivateStudentMode() {
     result.innerHTML += timers.physics;
     result.innerHTML += timers.chemistry;
     
-    // Start the timers
+    // Add TP Of IT timer if student has GroupN
+    if (student.GroupN) {
+        const tpItTimer = initializeTPOfITTimer(student);
+        result.innerHTML += tpItTimer;
+    }
+    
+    // Start all timers
     setTimeout(() => {
         startLabTimers(student);
+        if (student.GroupN) {
+            startTPOfITTimers(student);
+        }
     }, 100);
-  }
+}
 
   // === STUDENT SIDEBAR FUNCTIONS ===
 
@@ -2076,4 +2090,108 @@ function isABC(grpTP) {
     return ["A", "B", "C"].includes(grpTP);
 }
 
+// === TP Of IT Timer Functions ===
+
+// Add this function to initialize TP Of IT timers
+function initializeTPOfITTimer(student) {
+    const groupNumber = student.GroupN;
+    const nextTPOfIT = getNextTPOfITDate(groupNumber);
+    
+    return createTPOfITTimerHTML(groupNumber, nextTPOfIT);
+}
+
+function getNextTPOfITDate(groupNumber) {
+    const now = new Date();
+    const targetDay = 2; // Tuesday (0 = Sunday, 1 = Monday, 2 = Tuesday)
+    const targetHour = 12; // 12:00 PM
+    const targetMinute = 0;
+    
+    // Find next Tuesday 12:00 PM
+    let nextDate = new Date(now);
+    nextDate.setDate(now.getDate() + ((7 + targetDay - now.getDay()) % 7));
+    nextDate.setHours(targetHour, targetMinute, 0, 0);
+    
+    // If we've passed this Tuesday 12:00 PM, go to next Tuesday
+    if (nextDate <= now) {
+        nextDate.setDate(nextDate.getDate() + 7);
+    }
+    
+    // Determine if this group has TP Of IT this week or next week
+    const referenceDate = new Date('2024-01-02T12:00:00'); // Adjust to your semester start
+    const msPerWeek = 7 * 24 * 60 * 60 * 1000;
+    const weeksFromReference = Math.floor((nextDate - referenceDate) / msPerWeek);
+    
+    // Groups 1 & 3: even weeks, Groups 2 & 4: odd weeks
+    const isEvenWeek = weeksFromReference % 2 === 0;
+    
+    if ((groupNumber === "1" || groupNumber === "3") && !isEvenWeek) {
+        // Groups 1 & 3 should have it on even weeks, so add 1 week
+        nextDate.setDate(nextDate.getDate() + 7);
+    } else if ((groupNumber === "2" || groupNumber === "4") && isEvenWeek) {
+        // Groups 2 & 4 should have it on odd weeks, so add 1 week
+        nextDate.setDate(nextDate.getDate() + 7);
+    }
+    
+    return nextDate;
+}
+
+function createTPOfITTimerHTML(groupNumber, targetDate) {
+    return `
+        <div class="tp-it-timer-container">
+            <div class="tp-it-timer-header">
+                📅 Next TP Of IT (Group ${groupNumber})
+            </div>
+            <div class="countdown-timer-tp-it" id="tp-it-timer-${groupNumber}">
+                <div class="tp-it-time-display">00W:00D:00H:00M:00S</div>
+            </div>
+        </div>
+    `;
+}
+
+function startTPOfITTimers(student) {
+    const groupNumber = student.GroupN;
+    const timerId = `tp-it-timer-${groupNumber}`;
+    
+    if (document.getElementById(timerId)) {
+        startSingleTPOfITTimer(timerId, getNextTPOfITDate(groupNumber));
+    }
+}
+
+function startSingleTPOfITTimer(timerId, targetDate) {
+    function updateTimer() {
+        const now = new Date();
+        const timeDiff = targetDate - now;
+        
+        if (timeDiff <= 0) {
+            // Timer expired, recalculate next occurrence
+            const groupNumber = timerId.split('-')[3]; // Extract group number from timerId
+            targetDate = getNextTPOfITDate(groupNumber);
+            updateTimer();
+            return;
+        }
+        
+        const weeks = Math.floor(timeDiff / (1000 * 60 * 60 * 24 * 7));
+        const days = Math.floor((timeDiff % (1000 * 60 * 60 * 24 * 7)) / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+        
+        const timeDisplay = `${weeks.toString().padStart(2, '0')}W:${days.toString().padStart(2, '0')}D:${hours.toString().padStart(2, '0')}H:${minutes.toString().padStart(2, '0')}M:${seconds.toString().padStart(2, '0')}S`;
+        
+        const timerElement = document.getElementById(timerId);
+        if (timerElement) {
+            const displayElement = timerElement.querySelector('.tp-it-time-display');
+            if (displayElement) {
+                displayElement.textContent = timeDisplay;
+                
+                // Add warning class when less than 1 day remaining
+                timerElement.classList.toggle('warning', days === 0 && hours < 24);
+            }
+        }
+    }
+    
+    // Update immediately and then every second
+    updateTimer();
+    setInterval(updateTimer, 1000);
+}
 
