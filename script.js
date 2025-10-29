@@ -265,7 +265,7 @@ const scheduleData = {
         { time: "14:30 - 17:30", course: "TP", location: "Lab", groups: "1,2,3,4" }
       ],
       "Tuesday": [
-        { time: "8:00 - 9:30", course: "Ethical and Deontological Dimension", location: "Class", groups: "1,2,3,4" },
+        { time: "8:00 - 9:30", course: "Ethical and Deontological Dimension", location: "Online", groups: "1,2,3,4" },
         { time: "12:00 - 14:30", course: "TP Of IT", location: "Lab", groups: "1,3" }
       ],
       "Wednesday": [
@@ -296,7 +296,7 @@ const scheduleData = {
         { time: "14:30 - 17:30", course: "TP", location: "Lab", groups: "1,2,3,4" }
       ],
       "Tuesday": [
-        { time: "8:00 - 9:30", course: "Ethical and Deontological Dimension", location: "Class", groups: "1,2,3,4" },
+        { time: "8:00 - 9:30", course: "Ethical and Deontological Dimension", location: "Online", groups: "1,2,3,4" },
         { time: "12:00 - 14:30", course: "TP Of IT", location: "Lab", groups: "2,4" }
       ],
       "Wednesday": [
@@ -327,7 +327,7 @@ const scheduleData = {
         { time: "14:30 - 17:30", course: "TP", location: "Lab", groups: "1,2,3,4" }
       ],
       "Tuesday": [
-        { time: "8:00 - 9:30", course: "Ethical and Deontological Dimension", location: "Class", groups: "1,2,3,4" },
+        { time: "8:00 - 9:30", course: "Ethical and Deontological Dimension", location: "Online", groups: "1,2,3,4" },
         { time: "12:00 - 14:30", course: "TP Of IT", location: "Lab", groups: "1,3" }
       ],
       "Wednesday": [
@@ -358,7 +358,7 @@ const scheduleData = {
         { time: "14:30 - 17:30", course: "TP", location: "Lab", groups: "1,2,3,4" }
       ],
       "Tuesday": [
-        { time: "8:00 - 9:30", course: "Ethical and Deontological Dimension", location: "Class", groups: "1,2,3,4" },
+        { time: "8:00 - 9:30", course: "Ethical and Deontological Dimension", location: "Online", groups: "1,2,3,4" },
         { time: "12:00 - 14:30", course: "TP Of IT", location: "Lab", groups: "2,4" }
       ],
       "Wednesday": [
@@ -373,7 +373,7 @@ const scheduleData = {
     }
   }
 };
-
+  
   let currentTeacherMode = null;
   let teacherStudentList = [];
   let studentToDeleteIndex = null;
@@ -2194,4 +2194,5 @@ function startSingleTPOfITTimer(timerId, targetDate) {
     updateTimer();
     setInterval(updateTimer, 1000);
 }
+
 
