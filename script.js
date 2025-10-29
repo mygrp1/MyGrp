@@ -266,7 +266,8 @@ const scheduleData = {
       ],
       "Tuesday": [
         { time: "8:00 - 9:30", course: "Ethical and Deontological Dimension", location: "Online", groups: "1,2,3,4" },
-        { time: "12:00 - 14:30", course: "TP Of IT", location: "Lab", groups: "1,3" }
+        { time: "11:20 - 12:50", course: "TP Of IT", location: "Lab", groups: "1,3" },
+        { time: "13:00 - 14:30", course: "TP Of IT", location: "Lab", groups: "1,3" }
       ],
       "Wednesday": [
         { time: "8:00 - 9:30", course: "TD Algebra", location: "Class 215", groups: "1" },
@@ -297,7 +298,8 @@ const scheduleData = {
       ],
       "Tuesday": [
         { time: "8:00 - 9:30", course: "Ethical and Deontological Dimension", location: "Online", groups: "1,2,3,4" },
-        { time: "12:00 - 14:30", course: "TP Of IT", location: "Lab", groups: "2,4" }
+        { time: "11:20 - 12:50", course: "TP Of IT", location: "Lab", groups: "2,4" },
+        { time: "13:00 - 14:30", course: "TP Of IT", location: "Lab", groups: "2,4" }
       ],
       "Wednesday": [
         { time: "8:00 - 9:30", course: "TD Physics", location: "Class 243", groups: "2" },
@@ -328,7 +330,8 @@ const scheduleData = {
       ],
       "Tuesday": [
         { time: "8:00 - 9:30", course: "Ethical and Deontological Dimension", location: "Online", groups: "1,2,3,4" },
-        { time: "12:00 - 14:30", course: "TP Of IT", location: "Lab", groups: "1,3" }
+        { time: "11:20 - 12:50", course: "TP Of IT", location: "Lab", groups: "1,3" },
+        { time: "13:00 - 14:30", course: "TP Of IT", location: "Lab", groups: "1,3" }
       ],
       "Wednesday": [
         { time: "8:00 - 9:30", course: "TD Physics", location: "Class 245", groups: "3" },
@@ -359,7 +362,8 @@ const scheduleData = {
       ],
       "Tuesday": [
         { time: "8:00 - 9:30", course: "Ethical and Deontological Dimension", location: "Online", groups: "1,2,3,4" },
-        { time: "12:00 - 14:30", course: "TP Of IT", location: "Lab", groups: "2,4" }
+        { time: "11:20 - 12:50", course: "TP Of IT", location: "Lab", groups: "2,4" },
+        { time: "13:00 - 14:30", course: "TP Of IT", location: "Lab", groups: "2,4" }
       ],
       "Wednesday": [
         { time: "8:00 - 9:30", course: "TD Algebra", location: "Class 259", groups: "4" },
@@ -1495,6 +1499,7 @@ function deactivateStudentMode() {
   }
 
 function displayStudentResults(student) {
+function displayStudentResults(student) {
     const labInfo = getLabInfo(student.GRP_TP);
     const info = `${student.NAME} ${student.PNAME} — Section ${student.SECT} — Group ${student.GRP_TP}`;
     const lines = info.split('—').map(s => s.trim());
@@ -1511,17 +1516,19 @@ function displayStudentResults(student) {
     result.innerHTML += timers.physics;
     result.innerHTML += timers.chemistry;
     
-    // Add TP Of IT timer if student has GroupN
-    if (student.GroupN) {
-        const tpItTimer = initializeTPOfITTimer(student);
+    // Add TP Of IT timer
+    const groupNumber = student.GroupN || (student.GRP_TP && ["A", "B", "C"].includes(student.GRP_TP) ? "1" : "2");
+    if (groupNumber) {
+        const tpItTimer = createTPOfITTimerHTML(groupNumber, getNextTPOfITDate(groupNumber));
         result.innerHTML += tpItTimer;
     }
     
     // Start all timers
     setTimeout(() => {
         startLabTimers(student);
-        if (student.GroupN) {
-            startTPOfITTimers(student);
+        if (groupNumber) {
+            const timerId = `tp-it-timer-${groupNumber}`;
+            startSingleTPOfITTimer(timerId, getNextTPOfITDate(groupNumber));
         }
     }, 100);
 }
@@ -1545,10 +1552,10 @@ function displayStudentResults(student) {
   }
 
 function loadGroupSchedule(groupNumber) {
+function loadGroupSchedule(groupNumber) {
   const groupData = scheduleData[groupNumber];
   if (!groupData) return;
   
-  // Create or update schedule display in main page
   let existingSchedule = document.getElementById('studentScheduleDisplay');
   if (!existingSchedule) {
     existingSchedule = document.createElement('div');
@@ -1557,9 +1564,11 @@ function loadGroupSchedule(groupNumber) {
     result.appendChild(existingSchedule);
   }
   
+  const tpGroup = getTPGroupFromGroupN(groupNumber);
+  const nextMondayTP = getNextLabDateAndType(tpGroup);
+  
   let html = `<h3>📚 Weekly Schedule for ${groupData.name}</h3>`;
   
-  // Define all time slots
   const timeSlots = [
     "8:00 - 9:30",
     "9:40 - 11:10", 
@@ -1568,7 +1577,6 @@ function loadGroupSchedule(groupNumber) {
     "14:30 - 17:30"
   ];
   
-  // Define days order
   const daysOrder = ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"];
   
   html += `
@@ -1579,7 +1587,6 @@ function loadGroupSchedule(groupNumber) {
             <th class="day-header">Day/Time</th>
   `;
   
-  // Create time slot headers
   timeSlots.forEach(timeSlot => {
     html += `<th class="time-header">${timeSlot}</th>`;
   });
@@ -1590,19 +1597,38 @@ function loadGroupSchedule(groupNumber) {
         <tbody>
   `;
   
-  // Create rows for each day
   daysOrder.forEach(day => {
     html += `<tr><td class="day-cell">${day}</td>`;
     
     const daySchedule = groupData.schedule[day] || [];
     
-    // For each time slot, find matching session
     timeSlots.forEach(timeSlot => {
       const session = daySchedule.find(s => s.time === timeSlot);
       
       if (session) {
-        // Format: "Course Type Location"
-        const displayText = `${session.course}<br><small>${session.location}</small>`;
+        let displayText = `${session.course}<br><small>${session.location}</small>`;
+        
+        if (day === "Monday" && timeSlot === "14:30 - 17:30" && session.course === "TP") {
+          displayText = `
+            <strong>${nextMondayTP.displayName}</strong><br>
+            <small>${session.location}</small>
+            <div class="small-tp-timer" id="schedule-monday-tp-timer-${groupNumber}">
+              <div class="small-timer-label">⏰ Next Session</div>
+              <div class="small-timer-display">--:--:--</div>
+            </div>
+          `;
+        } else if (day === "Tuesday" && (timeSlot === "11:20 - 12:50" || timeSlot === "13:00 - 14:30") && session.course.includes('TP Of IT') && session.groups.includes(groupNumber)) {
+          displayText = `
+            <div class="tp-it-note">⏰ Start At 12:30</div>
+            <strong>${session.course}</strong><br>
+            <small>${session.location}</small>
+            <div class="small-tp-timer" id="schedule-tp-it-timer-${groupNumber}">
+              <div class="small-timer-label">⏰ Next Session</div>
+              <div class="small-timer-display">--:--:--</div>
+            </div>
+          `;
+        }
+        
         html += `<td class="session-cell">${displayText}</td>`;
       } else {
         html += `<td class="empty-cell">/</td>`;
@@ -1616,11 +1642,32 @@ function loadGroupSchedule(groupNumber) {
         </tbody>
       </table>
     </div>
+    
+    <div class="small-timers-summary">
+      <h4>⏰ Upcoming TP Sessions</h4>
+      <div id="smallTimersContainer-${groupNumber}"></div>
+    </div>
   `;
   
   existingSchedule.innerHTML = html;
   
-  // Close sidebar after selection
+  const timers = initializeScheduleTPTimers(groupNumber);
+  const timersContainer = document.getElementById(`smallTimersContainer-${groupNumber}`);
+  if (timersContainer) {
+    timersContainer.innerHTML = timers.mondayTP + timers.tpIt;
+  }
+  
+  setTimeout(() => {
+    startSmallTPTimers(groupNumber);
+    
+    const mondayTP = getNextLabDateAndType(tpGroup);
+    startSingleSmallTimer(`schedule-monday-tp-timer-${groupNumber}`, mondayTP.date, mondayTP.displayName, groupNumber);
+    
+    if (groupData.schedule["Tuesday"]?.some(s => s.course.includes('TP Of IT') && s.groups.includes(groupNumber))) {
+      startSingleSmallTimer(`schedule-tp-it-timer-${groupNumber}`, getNextTPOfITDate(groupNumber), 'TP Of IT', groupNumber);
+    }
+  }, 100);
+  
   hideStudentSidebar();
 }
 
@@ -2092,7 +2139,6 @@ function isABC(grpTP) {
 
 // === TP Of IT Timer Functions ===
 
-// Add this function to initialize TP Of IT timers
 function initializeTPOfITTimer(student) {
     const groupNumber = student.GroupN;
     const nextTPOfIT = getNextTPOfITDate(groupNumber);
@@ -2102,22 +2148,22 @@ function initializeTPOfITTimer(student) {
 
 function getNextTPOfITDate(groupNumber) {
     const now = new Date();
-    const targetDay = 2; // Tuesday (0 = Sunday, 1 = Monday, 2 = Tuesday)
-    const targetHour = 12; // 12:00 PM
-    const targetMinute = 0;
+    const targetDay = 2; // Tuesday
+    const targetHour = 12; // 12:30 PM
+    const targetMinute = 30;
     
-    // Find next Tuesday 12:00 PM
+    // Find next Tuesday 12:30 PM
     let nextDate = new Date(now);
     nextDate.setDate(now.getDate() + ((7 + targetDay - now.getDay()) % 7));
     nextDate.setHours(targetHour, targetMinute, 0, 0);
     
-    // If we've passed this Tuesday 12:00 PM, go to next Tuesday
+    // If we've passed this Tuesday 12:30 PM, go to next Tuesday
     if (nextDate <= now) {
         nextDate.setDate(nextDate.getDate() + 7);
     }
     
     // Determine if this group has TP Of IT this week or next week
-    const referenceDate = new Date('2024-01-02T12:00:00'); // Adjust to your semester start
+    const referenceDate = new Date('2024-01-02T12:30:00');
     const msPerWeek = 7 * 24 * 60 * 60 * 1000;
     const weeksFromReference = Math.floor((nextDate - referenceDate) / msPerWeek);
     
@@ -2125,10 +2171,8 @@ function getNextTPOfITDate(groupNumber) {
     const isEvenWeek = weeksFromReference % 2 === 0;
     
     if ((groupNumber === "1" || groupNumber === "3") && !isEvenWeek) {
-        // Groups 1 & 3 should have it on even weeks, so add 1 week
         nextDate.setDate(nextDate.getDate() + 7);
     } else if ((groupNumber === "2" || groupNumber === "4") && isEvenWeek) {
-        // Groups 2 & 4 should have it on odd weeks, so add 1 week
         nextDate.setDate(nextDate.getDate() + 7);
     }
     
@@ -2163,8 +2207,7 @@ function startSingleTPOfITTimer(timerId, targetDate) {
         const timeDiff = targetDate - now;
         
         if (timeDiff <= 0) {
-            // Timer expired, recalculate next occurrence
-            const groupNumber = timerId.split('-')[3]; // Extract group number from timerId
+            const groupNumber = timerId.split('-')[3];
             targetDate = getNextTPOfITDate(groupNumber);
             updateTimer();
             return;
@@ -2183,16 +2226,138 @@ function startSingleTPOfITTimer(timerId, targetDate) {
             const displayElement = timerElement.querySelector('.tp-it-time-display');
             if (displayElement) {
                 displayElement.textContent = timeDisplay;
-                
-                // Add warning class when less than 1 day remaining
                 timerElement.classList.toggle('warning', days === 0 && hours < 24);
             }
         }
     }
     
-    // Update immediately and then every second
     updateTimer();
     setInterval(updateTimer, 1000);
 }
 
+// Enhanced function to get next lab date with type
+function getNextLabDateAndType(grpTP) {
+    const now = new Date();
+    const targetDay = 1; // Monday
+    const targetHour = 14; // 2:30 PM
+    const targetMinute = 30;
+    
+    let nextDate = new Date(now);
+    nextDate.setDate(now.getDate() + ((7 + targetDay - now.getDay()) % 7));
+    nextDate.setHours(targetHour, targetMinute, 0, 0);
+    
+    if (nextDate <= now) {
+        nextDate.setDate(nextDate.getDate() + 7);
+    }
+    
+    const referenceDate = new Date('2024-01-01T14:30:00');
+    const msPerWeek = 7 * 24 * 60 * 60 * 1000;
+    const weeksFromReference = Math.floor((nextDate - referenceDate) / msPerWeek);
+    
+    const isEvenWeek = weeksFromReference % 2 === 0;
+    const isABC = ["A", "B", "C"].includes(grpTP);
+    
+    let labType;
+    if ((isABC && isEvenWeek) || (!isABC && !isEvenWeek)) {
+        labType = 'physics';
+    } else {
+        labType = 'chemistry';
+    }
+    
+    return {
+        date: nextDate,
+        type: labType,
+        displayName: labType === 'physics' ? 'Physics Lab' : 'Chemistry Lab'
+    };
+}
 
+// === Small TP Timers for Dynamic Monday TP ===
+
+function initializeScheduleTPTimers(groupNumber) {
+    const tpGroup = getTPGroupFromGroupN(groupNumber);
+    const nextLab = getNextLabDateAndType(tpGroup);
+    const tpItDate = getNextTPOfITDate(groupNumber);
+    
+    return {
+        mondayTP: createSmallTimerHTML('monday-tp', nextLab.date, groupNumber, nextLab.displayName),
+        tpIt: createSmallTimerHTML('tp-it', tpItDate, groupNumber, 'TP Of IT')
+    };
+}
+
+function getTPGroupFromGroupN(groupNumber) {
+    const tpGroups = { "1": "A", "2": "B", "3": "C", "4": "D" };
+    return tpGroups[groupNumber] || "A";
+}
+
+function createSmallTimerHTML(type, targetDate, groupNumber, displayName) {
+    const timerId = `small-${type}-timer-${groupNumber}`;
+    const icons = {
+        'monday-tp': '🔬',
+        'tp-it': '💻'
+    };
+    
+    return `
+        <div class="small-tp-timer small-${type}-timer" id="${timerId}">
+            <div class="small-timer-label">${icons[type]} Next ${displayName}</div>
+            <div class="small-timer-display">--:--:--</div>
+        </div>
+    `;
+}
+
+function startSmallTPTimers(groupNumber) {
+    const tpGroup = getTPGroupFromGroupN(groupNumber);
+    const nextLab = getNextLabDateAndType(tpGroup);
+    const tpItDate = getNextTPOfITDate(groupNumber);
+    
+    startSingleSmallTimer(`small-monday-tp-timer-${groupNumber}`, nextLab.date, nextLab.displayName, groupNumber);
+    startSingleSmallTimer(`small-tp-it-timer-${groupNumber}`, tpItDate, 'TP Of IT', groupNumber);
+}
+
+function startSingleSmallTimer(timerId, targetDate, displayName, groupNumber) {
+    function updateTimer() {
+        const now = new Date();
+        const timeDiff = targetDate - now;
+        
+        if (timeDiff <= 0) {
+            const parts = timerId.split('-');
+            const type = parts[1];
+            
+            if (type === 'monday-tp') {
+                const tpGroup = getTPGroupFromGroupN(groupNumber);
+                const nextLab = getNextLabDateAndType(tpGroup);
+                targetDate = nextLab.date;
+                displayName = nextLab.displayName;
+                
+                const timerElement = document.getElementById(timerId);
+                if (timerElement) {
+                    const labelElement = timerElement.querySelector('.small-timer-label');
+                    if (labelElement) {
+                        labelElement.textContent = `🔬 Next ${displayName}`;
+                    }
+                }
+            } else if (type === 'tp-it') {
+                targetDate = getNextTPOfITDate(groupNumber);
+            }
+            updateTimer();
+            return;
+        }
+        
+        const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+        
+        const timeDisplay = `${days}d ${hours}h ${minutes}m`;
+        
+        const timerElement = document.getElementById(timerId);
+        if (timerElement) {
+            const displayElement = timerElement.querySelector('.small-timer-display');
+            if (displayElement) {
+                displayElement.textContent = timeDisplay;
+                timerElement.classList.toggle('warning', days === 0 && hours < 24);
+            }
+        }
+    }
+    
+    updateTimer();
+    setInterval(updateTimer, 60000);
+                                                                                                                                                                            }
