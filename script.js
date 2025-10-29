@@ -1499,7 +1499,6 @@ function deactivateStudentMode() {
   }
 
 function displayStudentResults(student) {
-function displayStudentResults(student) {
     const labInfo = getLabInfo(student.GRP_TP);
     const info = `${student.NAME} ${student.PNAME} — Section ${student.SECT} — Group ${student.GRP_TP}`;
     const lines = info.split('—').map(s => s.trim());
@@ -1551,7 +1550,6 @@ function displayStudentResults(student) {
     }
   }
 
-function loadGroupSchedule(groupNumber) {
 function loadGroupSchedule(groupNumber) {
   const groupData = scheduleData[groupNumber];
   if (!groupData) return;
@@ -2361,3 +2359,4 @@ function startSingleSmallTimer(timerId, targetDate, displayName, groupNumber) {
     updateTimer();
     setInterval(updateTimer, 60000);
                                                                                                                                                                             }
+
