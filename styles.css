@@ -1144,7 +1144,87 @@ h3 {
     letter-spacing: 0.5px;
 }
 
-/* Responsive TP Of IT timers */
+/* === Small TP Timer Styles === */
+.small-tp-timer {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+    padding: 3px 6px;
+    margin: 2px 0;
+    font-size: 0.7rem;
+    border-left: 2px solid #8e44ad;
+}
+
+.small-tp-timer.warning {
+    background: rgba(231, 76, 60, 0.1);
+    border-left-color: #e74c3c;
+}
+
+.small-timer-label {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 1px;
+}
+
+.small-timer-display {
+    font-family: 'Courier New', monospace;
+    font-size: 0.65rem;
+    color: #666;
+    letter-spacing: 0.5px;
+}
+
+.small-monday-tp-timer {
+    border-left-color: #667eea;
+}
+
+.small-tp-it-timer {
+    border-left-color: #8e44ad;
+}
+
+.session-cell .small-tp-timer {
+    background: rgba(0, 0, 0, 0.03);
+    margin-top: 5px;
+    padding: 2px 4px;
+}
+
+/* TP Of IT Note Styles */
+.tp-it-note {
+    background: #fff3cd;
+    color: #856404;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    margin-bottom: 3px;
+    border-left: 2px solid #ffc107;
+    text-align: center;
+}
+
+.session-cell .tp-it-note + strong {
+    display: block;
+    margin-top: 3px;
+}
+
+/* Small timers summary section */
+.small-timers-summary {
+    margin-top: 20px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #8e44ad;
+}
+
+.small-timers-summary h4 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.small-timers-summary .small-tp-timer {
+    display: inline-block;
+    margin: 5px 10px 5px 0;
+    vertical-align: top;
+}
+
+/* Responsive styles */
 @media (max-width: 768px) {
     .tp-it-timer-container {
         padding: 12px;
@@ -1162,9 +1242,17 @@ h3 {
     
     .tp-it-time-display {
         font-size: 0.9rem;
-        letter-spacing: 0.5px;
     }
-}
+    
+    .small-tp-timer {
+        padding: 4px 8px;
+        font-size: 0.75rem;
+    }
+    
+    .small-timer-display {
+        font-size: 0.7rem;
+    }
+  }
 /* === Student Sidebar Styles === */
 .student-sidebar {
   position: fixed;
@@ -1551,4 +1639,5 @@ h3 {
     font-size: 10px;
   }
 }
+
 
