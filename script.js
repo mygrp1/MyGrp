@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   // Student data array (will be added by user)
   const data = [
-    { MAT: "242431773116", NAME: "ABSA", PNAME: "RAOUAA", SECT: "13", GRP_TP: "F" },
+    { MAT: "242431773116", NAME: "ABSA", PNAME: "RAOUAA", SECT: "13", GRP_TP: "E" },
     { MAT: "232331603603", NAME: "MERHOUM", PNAME: "MERIEM", SECT: "13", GRP_TP: "D" },
     { MAT: "222231694213", NAME: "BOUREZG", PNAME: "AGHILES", SECT: "13", GRP_TP: "Unknown" },
     { MAT: "242431653209", NAME: "ZERROUK", PNAME: "MANEL", SECT: "13", GRP_TP: "F" },
@@ -1511,26 +1511,6 @@ function displayStudentResults(student) {
     result.innerHTML += `<p class="result-line" style="animation-delay:${(lines.length + 1) * 0.4}s">🧪 Chemistry Lab: ${labInfo.chemistryLab}</p>`;
     result.innerHTML += `<p class="result-line" style="animation-delay:${(lines.length + 2) * 0.4}s">⚛️ Physics Lab: ${labInfo.physicsLab}</p>`;
     
-    // Add the lab timers
-    const timers = initializeLabTimers(student);
-    result.innerHTML += timers.physics;
-    result.innerHTML += timers.chemistry;
-    
-    // Add TP Of IT timer
-    const groupNumber = student.GroupN || (student.GRP_TP && ["A", "B", "C"].includes(student.GRP_TP) ? "1" : "2");
-    if (groupNumber) {
-        const tpItTimer = createTPOfITTimerHTML(groupNumber, getNextTPOfITDate(groupNumber));
-        result.innerHTML += tpItTimer;
-    }
-    
-    // Start all timers
-    setTimeout(() => {
-        startLabTimers(student);
-        if (groupNumber) {
-            const timerId = `tp-it-timer-${groupNumber}`;
-            startSingleTPOfITTimer(timerId, getNextTPOfITDate(groupNumber));
-        }
-    }, 100);
 }
 
   // === STUDENT SIDEBAR FUNCTIONS ===
@@ -1552,7 +1532,8 @@ function displayStudentResults(student) {
   }
 
 function loadGroupSchedule(groupNumber) {
-  const groupData = scheduleData[groupNumber];
+   // Use the current student's GRP_TP for Monday TP, not derived from group number
+  const tpGroup = currentStudent ? currentStudent.GRP_TP : "A";
   if (!groupData) return;
   
   let existingSchedule = document.getElementById('studentScheduleDisplay');
@@ -1960,189 +1941,9 @@ function startHamburgerAnimation() {
     animationId = requestAnimationFrame(animate);
   }
 }
-
-// Lab schedule countdown timers
-function initializeLabTimers(student) {
-    const grpTP = student.GRP_TP;
-    const isABC = ["A", "B", "C"].includes(grpTP);
-    
-    // Get next occurrence dates
-    const nextPhysics = getNextLabDate(isABC ? 'physics' : 'chemistry');
-    const nextChemistry = getNextLabDate(isABC ? 'chemistry' : 'physics');
-    
-    return {
-        physics: createTimerHTML('Physics Lab', nextPhysics, isABC ? 'next' : 'current'),
-        chemistry: createTimerHTML('Chemistry Lab', nextChemistry, isABC ? 'current' : 'next')
-    };
-}
-
-function getNextLabDate(labType) {
-    const now = new Date();
-    const targetDay = 1; // Monday (0 = Sunday, 1 = Monday)
-    const targetHour = 14; // 2:30 PM
-    const targetMinute = 30;
-    
-    // Calculate next Monday 2:30 PM
-    let nextDate = new Date(now);
-    nextDate.setDate(now.getDate() + ((7 + targetDay - now.getDay()) % 7));
-    nextDate.setHours(targetHour, targetMinute, 0, 0);
-    
-    // If we've passed this Monday 2:30 PM, go to next Monday
-    if (nextDate <= now) {
-        nextDate.setDate(nextDate.getDate() + 7);
-    }
-    
-    // For alternating weeks, check if we need to add 1 more week
-    const weekDifference = Math.floor((nextDate - now) / (7 * 24 * 60 * 60 * 1000));
-    
-    if (labType === 'physics') {
-        // Physics labs happen every 2 weeks starting from a specific reference date
-        // You may need to adjust the reference date based on your academic calendar
-        const referenceDate = new Date('2024-01-01T14:30:00'); // Example reference date
-        const weeksFromReference = Math.floor((nextDate - referenceDate) / (7 * 24 * 60 * 60 * 1000));
-        
-        if (weeksFromReference % 2 !== 0) {
-            nextDate.setDate(nextDate.getDate() + 7);
-        }
-    } else {
-        // Chemistry labs happen on opposite weeks from Physics
-        const referenceDate = new Date('2024-01-08T14:30:00'); // Example reference date (1 week after physics)
-        const weeksFromReference = Math.floor((nextDate - referenceDate) / (7 * 24 * 60 * 60 * 1000));
-        
-        if (weeksFromReference % 2 !== 0) {
-            nextDate.setDate(nextDate.getDate() + 7);
-        }
-    }
-    
-    return nextDate;
-}
-
-function createTimerHTML(labName, targetDate, weekType) {
-    const timerId = labName.toLowerCase().replace(' ', '-') + '-timer';
-    const displayName = weekType === 'current' ? `📅 This Week: ${labName}` : `📅 Next Week: ${labName}`;
-    
-    return `
-        <div class="lab-timer-container">
-            <div class="lab-timer-header">
-                ${displayName} in TP Class
-            </div>
-            <div class="countdown-timer-lab" id="${timerId}">
-                <div class="lab-time-display">00W:00D:00H:00M:00S</div>
-            </div>
-        </div>
-    `;
-}
-
-function startLabTimers(student) {
-    const grpTP = student.GRP_TP;
-    const isABC = ["A", "B", "C"].includes(grpTP);
-    
-    const physicsTimer = document.getElementById('physics-lab-timer');
-    const chemistryTimer = document.getElementById('chemistry-lab-timer');
-    
-    if (physicsTimer) {
-        startSingleTimer('physics-lab-timer', getNextLabDate(isABC ? 'physics' : 'chemistry'));
-    }
-    
-    if (chemistryTimer) {
-        startSingleTimer('chemistry-lab-timer', getNextLabDate(isABC ? 'chemistry' : 'physics'));
-    }
-}
-
-function startSingleTimer(timerId, targetDate) {
-    function updateTimer() {
-        const now = new Date();
-        const timeDiff = targetDate - now;
-        
-        if (timeDiff <= 0) {
-            // Timer expired, recalculate next occurrence
-            targetDate = getNextLabDate(timerId.includes('physics') ? 'physics' : 'chemistry');
-            updateTimer();
-            return;
-        }
-        
-        const weeks = Math.floor(timeDiff / (1000 * 60 * 60 * 24 * 7));
-        const days = Math.floor((timeDiff % (1000 * 60 * 60 * 24 * 7)) / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
-        
-        const timeDisplay = `${weeks.toString().padStart(2, '0')}W:${days.toString().padStart(2, '0')}D:${hours.toString().padStart(2, '0')}H:${minutes.toString().padStart(2, '0')}M:${seconds.toString().padStart(2, '0')}S`;
-        
-        const timerElement = document.getElementById(timerId);
-        if (timerElement) {
-            const displayElement = timerElement.querySelector('.lab-time-display');
-            if (displayElement) {
-                displayElement.textContent = timeDisplay;
-                
-                // Add warning class when less than 1 day remaining
-                timerElement.classList.toggle('warning', days === 0 && hours < 24);
-            }
-        }
-    }
-    
     // Update immediately and then every second
     updateTimer();
     setInterval(updateTimer, 1000);
-}
-
-// Smart lab date calculation based on actual alternating weeks
-function getNextLabDateSmart(labType, grpTP) {
-    const now = new Date();
-    const targetDay = 1; // Monday
-    const targetHour = 14; // 2:30 PM
-    const targetMinute = 30;
-    
-    // Find next Monday 2:30 PM
-    let nextDate = new Date(now);
-    nextDate.setDate(now.getDate() + ((7 + targetDay - now.getDay()) % 7));
-    nextDate.setHours(targetHour, targetMinute, 0, 0);
-    
-    // If we've passed this Monday 2:30 PM, go to next Monday
-    if (nextDate <= now) {
-        nextDate.setDate(nextDate.getDate() + 7);
-    }
-    
-    // Determine which subject group ABC/DEF should have based on actual alternating schedule
-    // This assumes a fixed starting point where ABC had Physics on a specific date
-    const referenceDate = new Date('2024-01-01T14:30:00'); // Adjust this to your actual semester start
-    
-    // Calculate weeks from reference date
-    const msPerWeek = 7 * 24 * 60 * 60 * 1000;
-    const weeksFromReference = Math.floor((nextDate - referenceDate) / msPerWeek);
-    
-    // Even weeks: ABC=Physics, DEF=Chemistry
-    // Odd weeks: ABC=Chemistry, DEF=Physics
-    const isEvenWeek = weeksFromReference % 2 === 0;
-    
-    if (labType === 'physics') {
-        if ((isABC(grpTP) && isEvenWeek) || (!isABC(grpTP) && !isEvenWeek)) {
-            return nextDate;
-        } else {
-            nextDate.setDate(nextDate.getDate() + 7);
-            return nextDate;
-        }
-    } else { // chemistry
-        if ((isABC(grpTP) && !isEvenWeek) || (!isABC(grpTP) && isEvenWeek)) {
-            return nextDate;
-        } else {
-            nextDate.setDate(nextDate.getDate() + 7);
-            return nextDate;
-        }
-    }
-}
-
-function isABC(grpTP) {
-    return ["A", "B", "C"].includes(grpTP);
-}
-
-// === TP Of IT Timer Functions ===
-
-function initializeTPOfITTimer(student) {
-    const groupNumber = student.GroupN;
-    const nextTPOfIT = getNextTPOfITDate(groupNumber);
-    
-    return createTPOfITTimerHTML(groupNumber, nextTPOfIT);
 }
 
 function getNextTPOfITDate(groupNumber) {
@@ -2161,6 +1962,13 @@ function getNextTPOfITDate(groupNumber) {
         nextDate.setDate(nextDate.getDate() + 7);
     }
     
+    // Groups 2 & 4: this week, Groups 1 & 3: next week
+    if (groupNumber === "1" || groupNumber === "3") {
+        nextDate.setDate(nextDate.getDate() + 7);
+    }
+    
+    return nextDate;
+}
     // Determine if this group has TP Of IT this week or next week
     const referenceDate = new Date('2024-01-02T12:30:00');
     const msPerWeek = 7 * 24 * 60 * 60 * 1000;
@@ -2191,14 +1999,6 @@ function createTPOfITTimerHTML(groupNumber, targetDate) {
     `;
 }
 
-function startTPOfITTimers(student) {
-    const groupNumber = student.GroupN;
-    const timerId = `tp-it-timer-${groupNumber}`;
-    
-    if (document.getElementById(timerId)) {
-        startSingleTPOfITTimer(timerId, getNextTPOfITDate(groupNumber));
-    }
-}
 
 function startSingleTPOfITTimer(timerId, targetDate) {
     function updateTimer() {
@@ -2249,15 +2049,9 @@ function getNextLabDateAndType(grpTP) {
         nextDate.setDate(nextDate.getDate() + 7);
     }
     
-    const referenceDate = new Date('2024-01-01T14:30:00');
-    const msPerWeek = 7 * 24 * 60 * 60 * 1000;
-    const weeksFromReference = Math.floor((nextDate - referenceDate) / msPerWeek);
-    
-    const isEvenWeek = weeksFromReference % 2 === 0;
-    const isABC = ["A", "B", "C"].includes(grpTP);
-    
+    // Determine lab type based ONLY on GRP_TP
     let labType;
-    if ((isABC && isEvenWeek) || (!isABC && !isEvenWeek)) {
+    if (["A", "B", "C"].includes(grpTP)) {
         labType = 'physics';
     } else {
         labType = 'chemistry';
@@ -2360,5 +2154,6 @@ function startSingleSmallTimer(timerId, targetDate, displayName, groupNumber) {
     updateTimer();
     setInterval(updateTimer, 60000);
                                                                                                                                                                             }
+
 
 
