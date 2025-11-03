@@ -2119,10 +2119,55 @@ function startSingleSmallTimer(timerId, targetDate, displayName, groupNumber) {
             }
         }
     }
+    function startSingleSmallTimer(timerId, targetDate, displayName, groupNumber) {
+    function updateTimer() {
+        const now = new Date();
+        const timeDiff = targetDate - now;
+        
+        if (timeDiff <= 0) {
+            const parts = timerId.split('-');
+            const type = parts[1];
+            
+            if (type === 'monday-tp') {
+                const tpGroup = currentStudent ? currentStudent.GRP_TP : "A";
+                const nextLab = getNextLabDateAndType(tpGroup);
+                targetDate = nextLab.date;
+                displayName = nextLab.displayName;
+                
+                const timerElement = document.getElementById(timerId);
+                if (timerElement) {
+                    const labelElement = timerElement.querySelector('.small-timer-label');
+                    if (labelElement) {
+                        labelElement.textContent = `🔬 Next ${displayName}`;
+                    }
+                }
+            } else if (type === 'tp-it') {
+                targetDate = getNextTPOfITDate(groupNumber);
+            }
+            updateTimer();
+            return;
+        }
+        
+        const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+        
+        const timeDisplay = `${days}d ${hours}h ${minutes}m`;
+        
+        const timerElement = document.getElementById(timerId);
+        if (timerElement) {
+            const displayElement = timerElement.querySelector('.small-timer-display');
+            if (displayElement) {
+                displayElement.textContent = timeDisplay;
+                timerElement.classList.toggle('warning', days === 0 && hours < 24);
+            }
+        }
+    }
     
     updateTimer();
     setInterval(updateTimer, 60000);
-                                                                                                                                                                            }
+}
+}
 
 
 
