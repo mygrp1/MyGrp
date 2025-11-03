@@ -1532,19 +1532,11 @@ function displayStudentResults(student) {
   }
 
 function loadGroupSchedule(groupNumber) {
-   // Use the current student's GRP_TP for Monday TP, not derived from group number
-  const tpGroup = currentStudent ? currentStudent.GRP_TP : "A";
+  const groupData = scheduleData[groupNumber];
   if (!groupData) return;
   
-  let existingSchedule = document.getElementById('studentScheduleDisplay');
-  if (!existingSchedule) {
-    existingSchedule = document.createElement('div');
-    existingSchedule.id = 'studentScheduleDisplay';
-    existingSchedule.className = 'schedule-container';
-    result.appendChild(existingSchedule);
-  }
-  
-  const tpGroup = getTPGroupFromGroupN(groupNumber);
+  // Use the current student's GRP_TP for Monday TP, not derived from group number
+  const tpGroup = currentStudent ? currentStudent.GRP_TP : "A";
   const nextMondayTP = getNextLabDateAndType(tpGroup);
   
   let html = `<h3>📚 Weekly Schedule for ${groupData.name}</h3>`;
@@ -1941,10 +1933,7 @@ function startHamburgerAnimation() {
     animationId = requestAnimationFrame(animate);
   }
 }
-    // Update immediately and then every second
-    updateTimer();
-    setInterval(updateTimer, 1000);
-}
+
 
 function getNextTPOfITDate(groupNumber) {
     const now = new Date();
@@ -1969,22 +1958,7 @@ function getNextTPOfITDate(groupNumber) {
     
     return nextDate;
 }
-    // Determine if this group has TP Of IT this week or next week
-    const referenceDate = new Date('2024-01-02T12:30:00');
-    const msPerWeek = 7 * 24 * 60 * 60 * 1000;
-    const weeksFromReference = Math.floor((nextDate - referenceDate) / msPerWeek);
-    
-    // Groups 1 & 3: even weeks, Groups 2 & 4: odd weeks
-    const isEvenWeek = weeksFromReference % 2 === 0;
-    
-    if ((groupNumber === "1" || groupNumber === "3") && !isEvenWeek) {
-        nextDate.setDate(nextDate.getDate() + 7);
-    } else if ((groupNumber === "2" || groupNumber === "4") && isEvenWeek) {
-        nextDate.setDate(nextDate.getDate() + 7);
-    }
-    
-    return nextDate;
-}
+
 
 function createTPOfITTimerHTML(groupNumber, targetDate) {
     return `
@@ -2067,7 +2041,7 @@ function getNextLabDateAndType(grpTP) {
 // === Small TP Timers for Dynamic Monday TP ===
 
 function initializeScheduleTPTimers(groupNumber) {
-    const tpGroup = getTPGroupFromGroupN(groupNumber);
+    const tpGroup = currentStudent ? currentStudent.GRP_TP : "A";
     const nextLab = getNextLabDateAndType(tpGroup);
     const tpItDate = getNextTPOfITDate(groupNumber);
     
@@ -2075,11 +2049,6 @@ function initializeScheduleTPTimers(groupNumber) {
         mondayTP: createSmallTimerHTML('monday-tp', nextLab.date, groupNumber, nextLab.displayName),
         tpIt: createSmallTimerHTML('tp-it', tpItDate, groupNumber, 'TP Of IT')
     };
-}
-
-function getTPGroupFromGroupN(groupNumber) {
-    const tpGroups = { "1": "A", "2": "B", "3": "C", "4": "D" };
-    return tpGroups[groupNumber] || "A";
 }
 
 function createSmallTimerHTML(type, targetDate, groupNumber, displayName) {
@@ -2098,7 +2067,7 @@ function createSmallTimerHTML(type, targetDate, groupNumber, displayName) {
 }
 
 function startSmallTPTimers(groupNumber) {
-    const tpGroup = getTPGroupFromGroupN(groupNumber);
+    const tpGroup = currentStudent ? currentStudent.GRP_TP : "A";
     const nextLab = getNextLabDateAndType(tpGroup);
     const tpItDate = getNextTPOfITDate(groupNumber);
     
@@ -2116,7 +2085,7 @@ function startSingleSmallTimer(timerId, targetDate, displayName, groupNumber) {
             const type = parts[1];
             
             if (type === 'monday-tp') {
-                const tpGroup = getTPGroupFromGroupN(groupNumber);
+                const tpGroup = currentStudent ? currentStudent.GRP_TP : "A";
                 const nextLab = getNextLabDateAndType(tpGroup);
                 targetDate = nextLab.date;
                 displayName = nextLab.displayName;
@@ -2154,6 +2123,7 @@ function startSingleSmallTimer(timerId, targetDate, displayName, groupNumber) {
     updateTimer();
     setInterval(updateTimer, 60000);
                                                                                                                                                                             }
+
 
 
 
