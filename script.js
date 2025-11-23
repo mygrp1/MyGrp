@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   // Student data array (will be added by user)
-  const data = [   ]; 
+  const data = [ { NAME:"Test" MAT:"123456789"  ]; 
 
 
   // Teacher matricules
@@ -1818,4 +1818,5 @@ function startSingleSmallTimer(timerId, targetDate, displayName, groupNumber) {
     window.timerIntervals.push(interval);
 }
 })
+
 
